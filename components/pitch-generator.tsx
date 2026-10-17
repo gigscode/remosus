@@ -164,7 +164,7 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
                 </select>
                 <span className="text-xs font-normal text-slate-500">
                   {documents.length === 0 && !loadingDocuments
-                    ? 'No PDF, DOCX, or TXT CV found in this category. Add one in Settings / Profile Context.'
+                    ? 'No PDF, DOCX, or TXT CV found in this category. Add one in Profile.'
                     : 'PDF, DOCX, and TXT are supported for text extraction. DOC files can be stored but not read yet.'}
                 </span>
               </label>

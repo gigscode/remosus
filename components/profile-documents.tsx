@@ -13,7 +13,7 @@ const documentTypes = [
   {
     id: 'master-cv',
     title: 'Master CV',
-    description: 'Your complete work history and core engineering profile.',
+    description: 'Your complete work history and core skills.',
   },
   {
     id: 'content-writer',
@@ -251,7 +251,7 @@ export function ProfileDocuments({ userId }: { userId: string }) {
           </Card>
         ))}
       </div>
-      <p className="text-xs leading-5 text-slate-500">Storage must be enabled with the included private-bucket setup before uploads will work.</p>
+      <p className="text-xs leading-5 text-slate-500">If uploads fail, storage may not be set up for your account yet.</p>
     </section>
   )
 }

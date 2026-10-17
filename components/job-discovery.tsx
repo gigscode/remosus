@@ -222,13 +222,13 @@ export function JobDiscovery({
           </div>
           <h2 className="mt-2 text-lg font-semibold text-slate-950">Find roles that match your skills</h2>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">
-            A listing must show a target role and a matching skill in its title or description. Broad software-engineering titles are left out unless they clearly name a web specialty.
+            We only show roles that name a target job and a matching skill. Generic software jobs are filtered out unless they clearly mention web work.
           </p>
           <p className="mt-2 max-w-3xl text-xs leading-5 text-slate-500">
             Searches cover web development, email and Klaviyo, websites and WordPress, design and video, plus writing and content support.
           </p>
           <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">
-            These are search terms, not proof that every listing fits your experience. Shopify remains outside the active searches.
+            These are search terms, not proof that every listing fits your experience. Shopify roles are not included yet.
           </p>
         </div>
         <Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => void loadJobs()} disabled={loading}>
@@ -273,7 +273,7 @@ export function JobDiscovery({
         <div>
           <h2 className="text-xl font-bold text-slate-950">{filteredJobs.length} {filteredJobs.length === 1 ? 'listing' : 'listings'}</h2>
           <p className="mt-1 text-sm text-slate-600">
-            Showing listings with both a target-role signal and related skill evidence.
+            Showing roles that match a target job and a related skill.
             {' '}{region === 'nigeria' ? 'Location text may mention Nigeria, Africa-wide, or worldwide; remote listings with unspecified eligibility are also included. Confirm actual eligibility on the listing.' : region === 'africa' ? 'Location text may mention an African country, Africa-wide, or worldwide; remote listings with unspecified eligibility are also included. Confirm actual eligibility on the listing.' : region === 'remote' ? 'Remote listings may have country restrictions. Confirm on the source.' : 'Location eligibility varies by listing.'}
           </p>
         </div>

@@ -142,7 +142,7 @@ const allCuratedJobs: JobCardData[] = [
   {
     id: 'job-1',
     title: 'Ui/Ux Designer Web',
-    company: 'Webflow',
+    company: 'Northwind',
     category: 'Design',
     logoBg: 'bg-[#4353ff]',
     logoText: 'W',
@@ -151,7 +151,7 @@ const allCuratedJobs: JobCardData[] = [
     salary: '$450 - $500 / month',
     deadlineOrDate: '56 days left to apply',
     skills: ['Figma', 'Webflow CMS', 'UI Systems', 'Interaction Design', 'Responsive Prototyping'],
-    description: 'Webflow is seeking a UI/UX Designer to craft responsive web components and interactive modules for global customers.',
+    description: 'Northwind is seeking a UI/UX Designer to craft responsive web components and interactive modules for global customers.',
     responsibilities: [
       'Design clean, accessible web components and interface layouts in Figma and Webflow.',
       'Work alongside marketing and engineering teams on high-impact web initiatives.',
@@ -161,7 +161,7 @@ const allCuratedJobs: JobCardData[] = [
   {
     id: 'job-2',
     title: 'Ui/Ux Designer Web',
-    company: 'Canva',
+    company: 'Coralbyte',
     category: 'Design',
     logoBg: 'bg-gradient-to-tr from-amber-500 to-orange-500',
     logoText: 'C',
@@ -170,7 +170,7 @@ const allCuratedJobs: JobCardData[] = [
     salary: '$450 - $500 / month',
     deadlineOrDate: '56 days left to apply',
     skills: ['Visual Design', 'Web Apps', 'Design Systems', 'Micro-interactions', 'User Testing'],
-    description: 'Canva is expanding its core creative tooling and seeking a talented web designer to shape responsive user workflows.',
+    description: 'Coralbyte is expanding its core creative tooling and seeking a talented web designer to shape responsive user workflows.',
     responsibilities: [
       'Create polished user journey prototypes and interactive micro-animations.',
       'Collaborate with remote product engineers across international time zones.',
@@ -180,7 +180,7 @@ const allCuratedJobs: JobCardData[] = [
   {
     id: 'job-3',
     title: 'Ui/Ux Designer Web',
-    company: 'Aon',
+    company: 'Apexline',
     category: 'Design',
     logoBg: 'bg-slate-900',
     logoText: '▲',
@@ -189,7 +189,7 @@ const allCuratedJobs: JobCardData[] = [
     salary: '$450 - $500 / month',
     deadlineOrDate: '56 days left to apply',
     skills: ['Enterprise UX', 'Design Thinking', 'Accessibility (WCAG)', 'Information Architecture'],
-    description: 'Join Aon’s remote digital product team to simplify complex enterprise risk analysis workflows into intuitive user interfaces.',
+    description: 'Join Apexline’s remote digital product team to simplify complex enterprise risk analysis workflows into intuitive user interfaces.',
     responsibilities: [
       'Translate data-heavy risk reports into responsive, readable dashboards.',
       'Establish enterprise WCAG AA accessibility standards across customer portals.',
@@ -199,7 +199,7 @@ const allCuratedJobs: JobCardData[] = [
   {
     id: 'job-4',
     title: 'Ui/Ux Designer Web',
-    company: 'Slack',
+    company: 'Stackly',
     category: 'Design',
     logoBg: 'bg-[#4a154b]',
     logoText: 'S',
@@ -208,7 +208,7 @@ const allCuratedJobs: JobCardData[] = [
     salary: '$450 - $500 / month',
     deadlineOrDate: '56 days left to apply',
     skills: ['Figma', 'Design Systems', 'Product Design', 'Collaboration Tools', 'Typography'],
-    description: 'Slack is hiring a UI/UX Web Designer to focus on productivity surfaces and customer onboarding journeys.',
+    description: 'Stackly is hiring a UI/UX Web Designer to focus on productivity surfaces and customer onboarding journeys.',
     responsibilities: [
       'Prototype new interaction patterns for asynchronous communication tools.',
       'Enhance design system documentation and reusable component libraries.',
@@ -218,7 +218,7 @@ const allCuratedJobs: JobCardData[] = [
   {
     id: 'job-5',
     title: 'Senior Frontend Engineer',
-    company: 'Linear',
+    company: 'Loopware',
     category: 'Engineering',
     logoBg: 'bg-indigo-600',
     logoText: 'L',
@@ -227,7 +227,7 @@ const allCuratedJobs: JobCardData[] = [
     salary: '$5,500 - $7,000 / month',
     deadlineOrDate: '42 days left to apply',
     skills: ['React', 'TypeScript', 'Tailwind CSS', 'Web Performance', 'State Management'],
-    description: 'Linear is looking for a thoughtful frontend engineer who obsesses over keyboard navigation and sub-100ms interactions.',
+    description: 'Loopware is looking for a thoughtful frontend engineer who obsesses over keyboard navigation and sub-100ms interactions.',
     responsibilities: [
       'Build snappy, offline-first client interfaces using React and TypeScript.',
       'Optimize rendering pipelines and keyboard shortcuts for lightning-fast issue tracking.',
@@ -237,7 +237,7 @@ const allCuratedJobs: JobCardData[] = [
   {
     id: 'job-6',
     title: 'Full-Stack Web Developer',
-    company: 'Supabase',
+    company: 'Sundial',
     category: 'Engineering',
     logoBg: 'bg-gradient-to-tr from-emerald-600 to-teal-500',
     logoText: 'S',
@@ -246,7 +246,7 @@ const allCuratedJobs: JobCardData[] = [
     salary: '$4,800 - $6,500 / month',
     deadlineOrDate: '30 days left to apply',
     skills: ['Next.js', 'PostgreSQL', 'TypeScript', 'Auth Systems', 'REST & GraphQL'],
-    description: 'Supabase empowers developers to build faster. We are seeking a full-stack engineer in Africa to develop dashboard features.',
+    description: 'Sundial helps developers build faster. We are seeking a full-stack engineer in Africa to develop dashboard features.',
     responsibilities: [
       'Develop cloud database dashboard management views and analytics charts.',
       'Maintain reliable API endpoints and database migration scripts.',
@@ -256,7 +256,7 @@ const allCuratedJobs: JobCardData[] = [
   {
     id: 'job-7',
     title: 'Product Marketing Lead',
-    company: 'Buffer',
+    company: 'Bluepeak',
     category: 'Marketing',
     logoBg: 'bg-sky-500',
     logoText: 'B',
@@ -265,7 +265,7 @@ const allCuratedJobs: JobCardData[] = [
     salary: '$4,000 - $5,500 / month',
     deadlineOrDate: '24 days left to apply',
     skills: ['Product Messaging', 'Launch Strategy', 'SaaS Growth', 'Content Strategy'],
-    description: 'Buffer is an all-remote pioneer looking for a passionate product marketer to drive feature adoption and product launches.',
+    description: 'Bluepeak is an all-remote company looking for a product marketer to drive feature adoption and product launches.',
     responsibilities: [
       'Formulate go-to-market strategies for quarterly product releases.',
       'Craft compelling customer case studies, release notes, and email briefings.',
@@ -275,7 +275,7 @@ const allCuratedJobs: JobCardData[] = [
   {
     id: 'job-8',
     title: 'WordPress & React Specialist',
-    company: 'Automattic',
+    company: 'Wavelength',
     category: 'Websites',
     logoBg: 'bg-blue-600',
     logoText: 'W',
@@ -284,7 +284,7 @@ const allCuratedJobs: JobCardData[] = [
     salary: '$3,800 - $5,200 / month',
     deadlineOrDate: '18 days left to apply',
     skills: ['Gutenberg', 'React', 'PHP', 'Headless WordPress', 'Performance Tuning'],
-    description: 'Automattic is seeking a WordPress & React developer to build modern custom block themes and high-traffic publisher solutions.',
+    description: 'Wavelength is seeking a WordPress & React developer to build modern custom block themes and high-traffic publisher solutions.',
     responsibilities: [
       'Develop custom Gutenberg blocks with React and Tailwind CSS.',
       'Audit and optimize Core Web Vitals for global enterprise sites.',
@@ -439,9 +439,9 @@ export default function HomePage() {
 
                 <div className="mt-3 space-y-2.5">
                   {[
-                    { company: 'Webflow', role: 'UI/UX Designer', pay: '$500/mo', color: 'bg-[#4353ff]' },
-                    { company: 'Linear', role: 'Frontend Engineer', pay: '$6,500/mo', color: 'bg-indigo-600' },
-                    { company: 'Canva', role: 'Product Designer', pay: '$5,000/mo', color: 'bg-amber-500' },
+                    { company: 'Northwind', role: 'UI/UX Designer', pay: '$500/mo', color: 'bg-[#4353ff]' },
+                    { company: 'Loopware', role: 'Frontend Engineer', pay: '$6,500/mo', color: 'bg-indigo-600' },
+                    { company: 'Coralbyte', role: 'Product Designer', pay: '$5,000/mo', color: 'bg-amber-500' },
                   ].map((item) => (
                     <div
                       key={item.company}
@@ -515,7 +515,7 @@ export default function HomePage() {
                   <div>
                     <p className="text-xs font-bold text-slate-800">Application Sprint</p>
                     <p className="mt-0.5 text-xs text-slate-500">4 of 6 submitted</p>
-                    <p className="mt-1 text-[0.7rem] font-semibold text-emerald-600">Next: Linear follow-up</p>
+                    <p className="mt-1 text-[0.7rem] font-semibold text-emerald-600">Next: Loopware follow-up</p>
                   </div>
                 </div>
               </div>
@@ -543,9 +543,9 @@ export default function HomePage() {
                       Curated remote roles
                     </span>
                     <div className="mt-1 flex items-baseline justify-between">
-                      <span className="text-2xl font-extrabold tracking-tight">2,020</span>
+                      <span className="text-2xl font-extrabold tracking-tight">Live</span>
                       <span className="rounded-full bg-white/20 px-2 py-0.5 text-[0.65rem] font-bold text-emerald-300">
-                        +293 today
+                        Fresh daily
                       </span>
                     </div>
 
@@ -580,7 +580,7 @@ export default function HomePage() {
                     className="mt-3 cursor-pointer rounded-xl border border-slate-200/80 bg-white p-2.5 transition-all hover:border-[#7c3aed]"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-violet-50 px-2 py-0.5 text-[0.6rem] font-bold text-[#7c3aed]">Webflow</span>
+                      <span className="rounded-full bg-violet-50 px-2 py-0.5 text-[0.6rem] font-bold text-[#7c3aed]">Northwind</span>
                       <span className="text-[0.65rem] font-bold text-emerald-600">$500/mo</span>
                     </div>
                     <p className="mt-1 truncate text-xs font-bold text-slate-900">Ui/Ux Designer Web</p>
@@ -653,7 +653,7 @@ export default function HomePage() {
               <div className="mt-8 flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
                 <div>
                   <p className="text-[0.7rem] font-bold uppercase tracking-wider text-slate-400">Available roles</p>
-                  <p className="text-xl font-extrabold text-slate-900">2,020+ listings</p>
+                  <p className="text-xl font-extrabold text-slate-900">Fresh listings</p>
                 </div>
                 <div className="flex items-center gap-1 text-xs font-bold text-emerald-600">
                   <TrendingUp className="size-4" /> Updated daily
@@ -701,11 +701,11 @@ export default function HomePage() {
                   Latest jobs
                 </h2>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 ring-1 ring-emerald-200">
-                  <span className="size-2 rounded-full bg-emerald-500" /> Live feed
+                  <span className="size-2 rounded-full bg-emerald-500" /> Sample roles
                 </span>
               </div>
               <p className="mt-1.5 text-sm font-medium text-slate-500 sm:text-base">
-                2,020 remote roles curated, updated daily from verified feeds. Click any role to preview requirements before applying.
+                A sample of the remote roles we surface. Sign up to search the full live feed. Click any role to preview requirements before applying.
               </p>
             </div>
             <Link
@@ -821,7 +821,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-center justify-between text-[0.7rem] font-semibold text-slate-700 pt-1.5 border-t border-slate-200/60">
                   <span>Verified eligible roles</span>
-                  <span className="text-emerald-600 font-bold">2,020 live</span>
+                  <span className="text-emerald-600 font-bold">Live feed</span>
                 </div>
               </div>
             </div>
@@ -851,7 +851,7 @@ export default function HomePage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="grid size-5.5 place-items-center rounded-md bg-[#4353ff] text-[0.62rem] font-extrabold text-white shrink-0">W</span>
-                    <span className="truncate text-xs font-bold text-slate-800">Webflow · UI Designer</span>
+                    <span className="truncate text-xs font-bold text-slate-800">Northwind · UI Designer</span>
                   </div>
                   <span className="text-rose-500 font-bold text-xs flex items-center gap-1 shrink-0">
                     <Heart className="size-3.5 fill-rose-500" /> Saved
@@ -886,7 +886,7 @@ export default function HomePage() {
               {/* Micro-UI 3: Pipeline Tracker Progression */}
               <div className="mt-6 rounded-xl border border-slate-100 bg-slate-50/80 p-3">
                 <div className="flex items-center justify-between text-[0.68rem] font-bold text-slate-600 mb-2">
-                  <span>Linear status</span>
+                  <span>Loopware status</span>
                   <span className="text-[#7c3aed]">Interview stage</span>
                 </div>
                 <div className="flex items-center gap-1 text-[0.65rem] font-bold">

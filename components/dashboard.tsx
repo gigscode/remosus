@@ -341,7 +341,7 @@ export function Dashboard({
         </nav>
         <main className="flex-1 px-5 py-7 sm:px-8 lg:px-10">
           <div className="mx-auto flex max-w-[1440px] flex-col gap-6">
-            {dataError && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">Supabase returned an error: {dataError}</div>}
+            {dataError && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">Could not load your data: {dataError}</div>}
             {active === 'discovery' ? (
               <>
                 <section aria-labelledby="job-search-overview-title" className="overflow-hidden rounded-2xl border border-violet-100 bg-white shadow-sm">
@@ -394,7 +394,7 @@ export function Dashboard({
                 <section className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:p-6">
                   <div>
                     <div className="flex items-center gap-2"><span className="size-2 rounded-full bg-emerald-500" /><p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Your saved opportunities</p></div>
-                    <p className="mt-2 max-w-2xl text-base font-medium leading-7 text-slate-600">Add roles you find and track each application from one place. These records are saved to your Supabase account.</p>
+                    <p className="mt-2 max-w-2xl text-base font-medium leading-7 text-slate-600">Add roles you find and track each application from one place. These records stay private to your account.</p>
                   </div>
                   <Button className="w-full sm:w-auto" onClick={() => { setEditing(undefined); setShowForm((value) => !value) }}><Plus aria-hidden="true" data-icon="inline-start" />Add opportunity</Button>
                 </section>

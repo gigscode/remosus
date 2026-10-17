@@ -300,51 +300,41 @@ export function JobDetailModal({
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">Role Overview</h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
               {job.description ||
-                `${job.company} is seeking an experienced ${job.title} to join their remote team. In this role, you will collaborate across design and engineering teams to build modern, user-centric experiences for high-growth digital products.`}
+                'No details were provided for this listing. Open the original posting for the full description.'}
             </p>
           </div>
 
           {/* Key Skills */}
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">Highlighted Skills</h3>
-            <div className="mt-2.5 flex flex-wrap gap-2">
-              {(
-                job.skills || [
-                  'Responsive UI',
-                  'Figma & Design Systems',
-                  'Frontend Architecture',
-                  'Remote Collaboration',
-                  'Product Strategy',
-                ]
-              ).map((skill) => (
-                <span
-                  key={skill}
-                  className="rounded-lg border border-slate-200/80 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-2xs"
-                >
-                  {skill}
-                </span>
-              ))}
+          {job.skills && job.skills.length > 0 && (
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">Highlighted Skills</h3>
+              <div className="mt-2.5 flex flex-wrap gap-2">
+                {job.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="rounded-lg border border-slate-200/80 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-2xs"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* What You'll Do */}
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">Key Responsibilities</h3>
-            <ul className="mt-2.5 space-y-2 text-sm text-slate-600">
-              {(
-                job.responsibilities || [
-                  'Deliver high-fidelity interface solutions and interactive design specifications.',
-                  'Work closely with remote teammates across asynchronous workflows and sprint cycles.',
-                  'Maintain clean documentation and component standards for digital assets.',
-                ]
-              ).map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <Check className="mt-0.5 size-4 shrink-0 text-emerald-600" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {job.responsibilities && job.responsibilities.length > 0 && (
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">Key Responsibilities</h3>
+              <ul className="mt-2.5 space-y-2 text-sm text-slate-600">
+                {job.responsibilities.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <Check className="mt-0.5 size-4 shrink-0 text-emerald-600" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Honest Eligibility Notice */}
           <div className="rounded-xl border border-amber-200/70 bg-amber-50/60 p-4 text-xs text-amber-900">
