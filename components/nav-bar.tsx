@@ -22,7 +22,7 @@ export function NavBar() {
           scrolled ? 'border-slate-300/80 bg-white/95 shadow-md' : 'bg-white/85'
         }`}
       >
-        <Link href="/" aria-label="GigsHQ home" className="group flex items-center gap-1.5">
+        <Link href="/" aria-label="Remosus home" className="group flex items-center gap-1.5">
           <Image
             src="/gigshqicon.png"
             alt=""
@@ -32,7 +32,7 @@ export function NavBar() {
             priority
           />
           <span className="text-[1.1rem] font-extrabold tracking-tight text-slate-900">
-            gigs<span className="text-[#7c3aed]">hq</span>
+            remo<span className="text-[#7c3aed]">sus</span>
           </span>
         </Link>
 

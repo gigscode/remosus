@@ -1,8 +1,8 @@
-# gigshq: App Context for Claude
+# remosus: App Context for Claude
 
 ## What this app is
 
-gigshq is a personal job, freelance, and contract search workspace for one person. Its purpose is to help its owner find relevant opportunities, keep a focused pipeline, prepare tailored applications, and follow up on outreach. The near-term objective is to land a gig, project, or contract within two weeks.
+remosus is a personal job, freelance, and contract search workspace for one person. Its purpose is to help its owner find relevant opportunities, keep a focused pipeline, prepare tailored applications, and follow up on outreach. The near-term objective is to land a gig, project, or contract within two weeks.
 
 This is not a multi-tenant SaaS product. Do not add team, invitation, collaboration, or shared-workspace features unless explicitly requested.
 

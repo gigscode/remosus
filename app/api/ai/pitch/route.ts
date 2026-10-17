@@ -137,7 +137,7 @@ export async function POST(request: Request) {
       headers: {
         Authorization: 'Bearer ' + apiKey,
         'Content-Type': 'application/json',
-        'X-OpenRouter-Title': 'gigshq',
+        'X-OpenRouter-Title': 'remosus',
       },
       body: JSON.stringify({
         model,

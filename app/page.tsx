@@ -45,7 +45,7 @@ function NavBar() {
         }`}
       >
         {/* Closed gap between logo icon and text */}
-        <Link href="/" aria-label="GigsHQ home" className="group flex items-center gap-1.5">
+        <Link href="/" aria-label="Remosus home" className="group flex items-center gap-1.5">
           <Image
             src="/gigshqicon.png"
             alt=""
@@ -55,7 +55,7 @@ function NavBar() {
             priority
           />
           <span className="text-[1.1rem] font-extrabold tracking-tight text-slate-900">
-            gigs<span className="text-[#7c3aed]">hq</span>
+            remo<span className="text-[#7c3aed]">sus</span>
           </span>
         </Link>
 
@@ -384,7 +384,7 @@ export default function HomePage() {
 
           {/* Subtitle speaking directly to African remote talent */}
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg sm:leading-8">
-            Landing a global remote role from Nigeria or anywhere in Africa is hard enough. GigsHQ curates verified remote feeds, filters for real location eligibility, and keeps your applications in one workspace.
+            Landing a global remote role from Nigeria or anywhere in Africa is hard enough. Remosus curates verified remote feeds, filters for real location eligibility, and keeps your applications in one workspace.
           </p>
 
           {/* Dual Pill Action Controls */}
@@ -717,7 +717,7 @@ export default function HomePage() {
             Cut out the noise. <span className="text-[#7c3aed]">Protect your energy.</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600">
-            Job hunting while managing power cuts, unstable internet, and silent rejections takes a toll. GigsHQ is built to give you back clarity and control.
+            Job hunting while managing power cuts, unstable internet, and silent rejections takes a toll. Remosus is built to give you back clarity and control.
           </p>
 
           <div className="mt-14 grid gap-6 text-left sm:grid-cols-2">
@@ -879,7 +879,7 @@ export default function HomePage() {
                   Stay sane through every follow-up
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                  Sending applications into silence is draining. GigsHQ gives you a quiet, organized system to track where you applied, log dates, and follow up with confidence until you land the role.
+                  Sending applications into silence is draining. Remosus gives you a quiet, organized system to track where you applied, log dates, and follow up with confidence until you land the role.
                 </p>
               </div>
 
@@ -916,7 +916,7 @@ export default function HomePage() {
               Useful tools, without pretending every listing is perfect.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-slate-600">
-              We won&apos;t sell you a false dream. Here is the honest truth about how GigsHQ works and what to expect.
+              We won&apos;t sell you a false dream. Here is the honest truth about how Remosus works and what to expect.
             </p>
           </div>
 
@@ -999,7 +999,7 @@ export default function HomePage() {
                   className="rounded-lg transition-transform group-hover:scale-105"
                 />
                 <span className="text-base font-extrabold tracking-tight text-slate-900">
-                  gigs<span className="text-[#7c3aed]">hq</span>
+                  remo<span className="text-[#7c3aed]">sus</span>
                 </span>
               </Link>
               <p className="max-w-xs text-xs leading-relaxed text-slate-500">
@@ -1025,7 +1025,7 @@ export default function HomePage() {
           </div>
 
           <div className="mt-10 flex flex-col gap-2 border-t border-slate-100 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} GigsHQ. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Remosus. All rights reserved.</p>
             <p>Remote job search, organized.</p>
           </div>
         </div>

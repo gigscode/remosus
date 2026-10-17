@@ -365,7 +365,7 @@ export function JobDetailModal({
               href="/login?mode=sign-up"
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#573da5] px-6 text-sm font-bold text-white shadow-md transition-all hover:bg-[#463087]"
             >
-              Track in GigsHQ <ArrowUpRight className="size-4" />
+              Track in Remosus <ArrowUpRight className="size-4" />
             </Link>
           </div>
         </div>

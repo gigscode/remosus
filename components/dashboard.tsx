@@ -297,7 +297,7 @@ export function Dashboard({
       <aside className="hidden w-62 shrink-0 flex-col bg-[#573da5] px-4 py-6 text-white lg:flex">
         <div className="flex items-center gap-3 px-2">
           <Image src="/gigshqicon.png" alt="" width={40} height={40} className="rounded-xl bg-white p-1" />
-          <span className="text-2xl font-bold tracking-tight">gigs<span className="text-violet-200">hq</span></span>
+          <span className="text-2xl font-bold tracking-tight">remo<span className="text-violet-200">sus</span></span>
         </div>
         <p className="mb-3 mt-10 px-3 text-[11px] font-semibold uppercase tracking-[.12em] text-violet-200/70">Your workspace</p>
         <nav aria-label="Main navigation" className="flex flex-col gap-1">

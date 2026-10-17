@@ -11,7 +11,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'gigshq | Remote job search, organized',
+  title: 'Remosus | Remote job search, organized',
   description: 'Find remote roles, save the ones you want, and track your applications in one workspace.',
   icons: {
     icon: '/favicon.ico',
