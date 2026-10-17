@@ -21,7 +21,6 @@ import {
   Send,
   ShieldCheck,
   Target,
-  TrendingUp,
 } from 'lucide-react'
 import { JobCard, JobDetailModal, type JobCardData } from '@/components/job-card'
 
@@ -65,12 +64,6 @@ function NavBar() {
             className="hidden text-xs font-semibold text-slate-600 transition-colors hover:text-slate-900 sm:inline focus-visible:outline-2 focus-visible:outline-[#7c3aed] rounded"
           >
             How it works
-          </a>
-          <a
-            href="#features"
-            className="hidden text-xs font-semibold text-slate-600 transition-colors hover:text-slate-900 md:inline focus-visible:outline-2 focus-visible:outline-[#7c3aed] rounded"
-          >
-            Features
           </a>
           <a
             href="#latest-jobs"
@@ -620,6 +613,23 @@ export default function HomePage() {
       </div>
 
       {/* ══════════════════════════════════════
+          TAGLINE STRIP — "Cut out the noise."
+      ══════════════════════════════════════ */}
+      <div className="bg-[#fcfbfa] px-5 py-12 sm:px-8 sm:py-16 lg:px-12 text-center">
+        <div className="mx-auto max-w-3xl">
+          <span className="inline-flex items-center rounded-full bg-[#f3e8ff] px-3.5 py-1 text-xs font-bold text-[#7c3aed]">
+            Built for African talent
+          </span>
+          <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-slate-900 sm:text-4xl lg:text-5xl">
+            Cut out the noise. <span className="text-[#7c3aed]">Protect your energy.</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
+            Job hunting while managing power cuts, unstable internet, and silent rejections takes a toll. Remosus is built to give you back clarity and control.
+          </p>
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════
           LATEST JOBS SHOWCASE (Clickable 2x2 Grid + Category Filters)
       ══════════════════════════════════════ */}
       <section id="latest-jobs" className="border-t border-slate-200/80 bg-white py-16 sm:py-24">
@@ -704,75 +714,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════
-          FEATURE HIGHLIGHTS: "Cut out the noise. Protect your energy."
-      ══════════════════════════════════════ */}
-      <section id="features" className="py-12 sm:py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 text-center">
-          <span className="inline-flex items-center rounded-full bg-[#f3e8ff] px-3.5 py-1 text-xs font-bold text-[#7c3aed]">
-            Built for African talent
-          </span>
-
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-            Cut out the noise. <span className="text-[#7c3aed]">Protect your energy.</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600">
-            Job hunting while managing power cuts, unstable internet, and silent rejections takes a toll. Remosus is built to give you back clarity and control.
-          </p>
-
-          <div className="mt-14 grid gap-6 text-left sm:grid-cols-2">
-            {/* Card 1: Real Location Signals */}
-            <div className="flex flex-col justify-between rounded-3xl border border-slate-200/90 bg-white p-5 shadow-xs sm:p-9 transition-all hover:shadow-md">
-              <div>
-                <div className="grid size-12 place-items-center rounded-2xl bg-[#7c3aed] text-white shadow-xs">
-                  <Compass className="size-6" />
-                </div>
-                <h3 className="mt-5 text-xl font-extrabold text-slate-900">
-                  Filters that respect your location
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  We highlight roles with clear signals for Nigeria, Africa-wide, or unrestricted global remote work. No more filling 40-minute application forms just to be told your country isn&apos;t supported.
-                </p>
-              </div>
-
-              <div className="mt-8 flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
-                <div>
-                  <p className="text-[0.7rem] font-bold uppercase tracking-wider text-slate-400">Available roles</p>
-                  <p className="text-xl font-extrabold text-slate-900">Fresh listings</p>
-                </div>
-                <div className="flex items-center gap-1 text-xs font-bold text-emerald-600">
-                  <TrendingUp className="size-4" /> Updated daily
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2: Consolidated Feeds */}
-            <div className="flex flex-col justify-between rounded-3xl border border-slate-200/90 bg-white p-5 shadow-xs sm:p-9 transition-all hover:shadow-md">
-              <div>
-                <div className="grid size-12 place-items-center rounded-2xl bg-[#7c3aed] text-white shadow-xs">
-                  <FolderKanban className="size-6" />
-                </div>
-                <h3 className="mt-5 text-xl font-extrabold text-slate-900">
-                  All your feeds consolidated
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  Instead of hopping between Jobicy, Remote OK, and Freehire every single morning, search once. Save the original link and apply directly on the employer&apos;s site.
-                </p>
-              </div>
-
-              <div className="mt-8 flex items-center justify-around rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
-                <span className="rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-2xs">Jobicy</span>
-                <span className="text-slate-300 font-bold">→</span>
-                <div className="grid size-10 place-items-center rounded-xl bg-[#7c3aed] text-white font-extrabold text-xs shadow-xs">
-                  HQ
-                </div>
-                <span className="text-slate-300 font-bold">←</span>
-                <span className="rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-2xs">RemoteOK</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ══════════════════════════════════════
           HOW IT WORKS (OPTION A: INTERACTIVE MICRO-UI PIPELINE CARDS)
@@ -1012,7 +953,6 @@ export default function HomePage() {
               <div className="flex flex-col gap-3">
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Product</p>
                 <a href="#how-it-works" className="font-semibold text-slate-600 transition-colors hover:text-[#7c3aed]">How it works</a>
-                <a href="#features" className="font-semibold text-slate-600 transition-colors hover:text-[#7c3aed]">Features</a>
                 <a href="#latest-jobs" className="font-semibold text-slate-600 transition-colors hover:text-[#7c3aed]">Latest jobs</a>
                 <a href="#transparency" className="font-semibold text-slate-600 transition-colors hover:text-[#7c3aed]">Transparency</a>
               </div>

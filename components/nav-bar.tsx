@@ -44,12 +44,6 @@ export function NavBar() {
             How it works
           </a>
           <a
-            href="/#features"
-            className="hidden text-xs font-semibold text-slate-600 transition-colors hover:text-slate-900 md:inline focus-visible:outline-2 focus-visible:outline-[#7c3aed] rounded"
-          >
-            Features
-          </a>
-          <a
             href="/#latest-jobs"
             className="hidden text-xs font-semibold text-slate-600 transition-colors hover:text-slate-900 md:inline focus-visible:outline-2 focus-visible:outline-[#7c3aed] rounded"
           >
