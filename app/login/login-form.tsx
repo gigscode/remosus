@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, ArrowRight, LoaderCircle, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { NavBar } from '@/components/nav-bar'
 import { createClient } from '@/lib/supabase/client'
 
 /* ─────────────────────────────────────────────────────────────
@@ -20,7 +21,7 @@ const COPY = {
   },
   'sign-up': {
     heading: 'Create your account',
-    subtitle: 'Free to use. No credit card. Just a smarter way to track your remote job search.',
+    subtitle: 'Free to use. No credit card. A calmer way to track your remote job search.',
   },
   'reset-request': {
     heading: 'Forgot your password?',
@@ -150,18 +151,14 @@ export function LoginForm({
   const passwordStrength = mode === 'sign-up' ? getPasswordStrength(password) : null
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#fbfaf7] px-4 py-10">
+    <div className="min-h-screen bg-[#fbfaf7]">
+      <NavBar />
+      <main className="flex min-h-[calc(100vh-80px)] items-center justify-center px-4 py-10">
       <Card className="w-full max-w-md border-slate-200/80 bg-white shadow-sm">
-        {/* ── Card header: logo + wordmark close together, then heading ── */}
+        {/* ── Card header: heading + subtitle only (logo lives in the top nav) ── */}
         <CardHeader className="items-center pb-2 pt-8 text-center">
-          {/* Logo + wordmark row */}
-          <div className="flex items-center gap-1.5">
-            <Image src="/gigshqicon.png" alt="" width={32} height={32} className="rounded-lg" />
-            <span className="text-base font-extrabold tracking-tight text-slate-900">gigshq</span>
-          </div>
-
           {/* Mode-aware heading */}
-          <h1 className="mt-5 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
             {heading}
           </h1>
 
@@ -313,6 +310,7 @@ export function LoginForm({
           )}
         </CardContent>
       </Card>
-    </main>
+      </main>
+    </div>
   )
 }
