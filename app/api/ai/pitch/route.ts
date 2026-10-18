@@ -4,10 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 export const runtime = 'nodejs'
 export const maxDuration = 30
 
-const defaultModel = 'gemini-2.0-flash'
-const fallbackModel = 'gemini-1.5-flash'
-const configuredModel = process.env.GEMINI_MODEL || defaultModel
-
 const documentTypes = ['master-cv', 'content-writer', 'wordpress'] as const
 type DocumentType = (typeof documentTypes)[number]
 
@@ -15,23 +11,115 @@ function responseError(message: string, status: number) {
   return NextResponse.json({ error: message }, { status })
 }
 
-async function callGemini(modelName: string, prompt: string, apiKey: string, signal: AbortSignal) {
-  return fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.4,
-          maxOutputTokens: 300,
-        },
-      }),
-      signal,
-      cache: 'no-store',
+/* Cache the last confirmed working model name in memory across requests in this serverless instance */
+let cachedWorkingModel: string | null = null
+
+/**
+ * Dynamically queries Google's Generative Language API to discover which models
+ * are currently available and authorized for this specific API key.
+ */
+async function discoverWorkingModels(apiKey: string): Promise<string[]> {
+  for (const apiVersion of ['v1beta', 'v1'] as const) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/${apiVersion}/models?key=${encodeURIComponent(apiKey)}`
+      const res = await fetch(url, {
+        headers: { 'x-goog-api-key': apiKey },
+        cache: 'no-store',
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => null)
+        console.error(`Gemini models list (${apiVersion}) returned status ${res.status}:`, JSON.stringify(err))
+        continue
+      }
+      const data = (await res.json()) as {
+        models?: { name?: string; supportedGenerationMethods?: string[] }[]
+      }
+      if (Array.isArray(data.models) && data.models.length > 0) {
+        const generateModels = data.models
+          .filter((m) => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
+          .map((m) => (m.name || '').replace(/^models\//, ''))
+          .filter(Boolean)
+
+        if (generateModels.length > 0) {
+          /* Sort flash and lightweight models first, followed by others */
+          return generateModels.sort((a, b) => {
+            const aScore = a.includes('flash') ? 0 : 1
+            const bScore = b.includes('flash') ? 0 : 1
+            return aScore - bScore
+          })
+        }
+      }
+    } catch (error) {
+      console.error(`Failed to query Gemini models list (${apiVersion}):`, error)
+    }
+  }
+  return []
+}
+
+/**
+ * Execute generateContent against a specific Gemini model
+ */
+async function executeGeminiRequest(
+  modelName: string,
+  prompt: string,
+  apiKey: string,
+  signal: AbortSignal,
+  apiVersion: 'v1beta' | 'v1' = 'v1beta',
+) {
+  const cleanModel = modelName.replace(/^models\//, '')
+  const url = `https://generativelanguage.googleapis.com/${apiVersion}/models/${cleanModel}:generateContent?key=${encodeURIComponent(apiKey)}`
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': apiKey,
     },
-  )
+    body: JSON.stringify({
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }],
+        },
+      ],
+      generationConfig: {
+        temperature: 0.4,
+        maxOutputTokens: 300,
+      },
+    }),
+    signal,
+    cache: 'no-store',
+  })
+}
+
+/**
+ * Extract generated text safely, taking into account reasoning / thinking tokens
+ */
+function extractGeminiText(result: unknown): string | null {
+  if (!result || typeof result !== 'object') return null
+  const candidates = (result as { candidates?: unknown[] }).candidates
+  if (!Array.isArray(candidates) || candidates.length === 0) return null
+
+  const firstCandidate = candidates[0] as {
+    content?: { parts?: { text?: string; thought?: boolean }[] }
+  }
+  const parts = firstCandidate?.content?.parts
+  if (!Array.isArray(parts) || parts.length === 0) return null
+
+  /* Filter out thought parts from reasoning models if present */
+  const answerParts = parts.filter((part) => !part.thought && typeof part.text === 'string')
+  if (answerParts.length > 0) {
+    const combined = answerParts.map((p) => p.text?.trim() || '').filter(Boolean).join('\n')
+    if (combined) return combined
+  }
+
+  /* Fallback: extract text from any part */
+  for (const part of parts) {
+    if (typeof part.text === 'string' && part.text.trim()) {
+      return part.text.trim()
+    }
+  }
+  return null
 }
 
 export async function POST(request: Request) {
@@ -39,8 +127,10 @@ export async function POST(request: Request) {
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (authError || !user) return responseError('Sign in again to generate a cover letter.', 401)
 
-  const apiKey = process.env.GEMINI_API_KEY
-  if (!apiKey) return responseError('Gemini is not configured on the server. Set GEMINI_API_KEY in your environment.', 503)
+  const apiKey = (process.env.GEMINI_API_KEY || '').trim()
+  if (!apiKey) {
+    return responseError('Gemini is not configured on the server. Set GEMINI_API_KEY in your environment variables.', 503)
+  }
 
   let body: unknown
   try {
@@ -104,50 +194,123 @@ export async function POST(request: Request) {
   const timeout = setTimeout(() => controller.abort(), 20000)
 
   try {
-    let activeModel = configuredModel
-    let providerResponse = await callGemini(activeModel, prompt, apiKey, controller.signal)
+    /* Determine candidate models to attempt in order */
+    const candidateModels: string[] = []
 
-    /* If the requested model is not found (404), attempt automatic fallback to gemini-1.5-flash */
-    if (providerResponse.status === 404 && activeModel !== fallbackModel) {
-      console.warn(`Gemini model ${activeModel} returned 404, falling back to ${fallbackModel}`)
-      activeModel = fallbackModel
-      providerResponse = await callGemini(activeModel, prompt, apiKey, controller.signal)
+    /* 1. If explicit env variable GEMINI_MODEL is set, check it first */
+    if (process.env.GEMINI_MODEL?.trim()) {
+      candidateModels.push(process.env.GEMINI_MODEL.trim())
     }
 
-    if (!providerResponse.ok) {
-      const errBody: unknown = await providerResponse.json().catch(() => null)
-      console.error('Gemini request failed with status.', providerResponse.status, JSON.stringify(errBody))
-      if (providerResponse.status === 429) {
-        return responseError('Rate limit reached. Wait a moment and try again.', 429)
-      }
-      if (providerResponse.status === 400) {
-        const errorMsg = (errBody as { error?: { message?: string } })?.error?.message ?? ''
-        if (errorMsg.toLowerCase().includes('api key')) {
-          return responseError('Gemini rejected the API key. Verify GEMINI_API_KEY in your deployment environment.', 502)
+    /* 2. If we already found a working model in a previous request, reuse it */
+    if (cachedWorkingModel) {
+      candidateModels.push(cachedWorkingModel)
+    }
+
+    /* 3. Common production model identifiers */
+    candidateModels.push('gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b')
+
+    /* Deduplicate candidate list */
+    const uniqueCandidates = Array.from(new Set(candidateModels))
+
+    let workingResponse: Response | null = null
+    let chosenModel = uniqueCandidates[0]
+    let lastErrorBody: unknown = null
+
+    for (const modelCandidate of uniqueCandidates) {
+      try {
+        const res = await executeGeminiRequest(modelCandidate, prompt, apiKey, controller.signal, 'v1beta')
+        if (res.ok) {
+          workingResponse = res
+          chosenModel = modelCandidate
+          cachedWorkingModel = modelCandidate
+          break
         }
-        return responseError('Gemini rejected the request. Check your CV text and try again.', 400)
+
+        /* If 404, this specific model name does not exist for this key/version; continue to next candidate */
+        if (res.status === 404) {
+          console.warn(`Model ${modelCandidate} returned 404 on v1beta, trying next candidate...`)
+          /* Also try v1 endpoint before giving up on this candidate */
+          const resV1 = await executeGeminiRequest(modelCandidate, prompt, apiKey, controller.signal, 'v1')
+          if (resV1.ok) {
+            workingResponse = resV1
+            chosenModel = modelCandidate
+            cachedWorkingModel = modelCandidate
+            break
+          }
+          continue
+        }
+
+        /* If 400 or 403, it could be an invalid key or permission issue. Capture error and break */
+        lastErrorBody = await res.json().catch(() => null)
+        console.error(`Gemini request failed on model ${modelCandidate} with status ${res.status}:`, JSON.stringify(lastErrorBody))
+        workingResponse = res
+        chosenModel = modelCandidate
+        break
+      } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') throw err
+        console.warn(`Attempt with model ${modelCandidate} encountered error:`, err)
       }
-      if (providerResponse.status === 403) {
-        return responseError('Gemini rejected the API key or permissions. Check GEMINI_API_KEY in the deployment environment.', 502)
-      }
-      if (providerResponse.status === 404) {
-        return responseError(`Gemini model "${activeModel}" was not found. Please use a supported model such as gemini-2.0-flash or gemini-1.5-flash.`, 502)
-      }
-      return responseError('The AI provider could not generate a cover letter right now. Try again later.', 502)
     }
 
-    const result: unknown = await providerResponse.json()
+    /* If all standard candidates returned 404, dynamically query Google's model list for this key */
+    if (!workingResponse || workingResponse.status === 404) {
+      console.log('Querying Google for list of models enabled on this API key...')
+      const discoveredModels = await discoverWorkingModels(apiKey)
+      console.log('Discovered models for key:', discoveredModels)
 
-    /* Gemini response shape: { candidates: [{ content: { parts: [{ text: "..." }] } }] } */
-    const text =
-      result &&
-      typeof result === 'object' &&
-      'candidates' in result &&
-      Array.isArray((result as { candidates: unknown[] }).candidates) &&
-      (result as { candidates: unknown[] }).candidates.length > 0 &&
-      typeof (result as { candidates: { content?: { parts?: { text?: string }[] } }[] }).candidates[0]?.content?.parts?.[0]?.text === 'string'
-        ? (result as { candidates: { content: { parts: { text: string }[] } }[] }).candidates[0].content.parts[0].text
-        : null
+      for (const discovered of discoveredModels) {
+        const res = await executeGeminiRequest(discovered, prompt, apiKey, controller.signal, 'v1beta')
+        if (res.ok) {
+          workingResponse = res
+          chosenModel = discovered
+          cachedWorkingModel = discovered
+          break
+        }
+      }
+    }
+
+    if (!workingResponse || !workingResponse.ok) {
+      const status = workingResponse?.status ?? 502
+      const errBody = lastErrorBody || (workingResponse ? await workingResponse.json().catch(() => null) : null)
+      console.error('Final Gemini request failed with status.', status, JSON.stringify(errBody))
+
+      const errorObj = errBody as { error?: { message?: string; status?: string } } | null
+      const detailedMessage = errorObj?.error?.message ?? ''
+
+      if (status === 429) {
+        return responseError('Rate limit reached on Google Gemini. Wait a moment and try again.', 429)
+      }
+      if (status === 400) {
+        if (detailedMessage.toLowerCase().includes('api key') || detailedMessage.toLowerCase().includes('invalid')) {
+          return responseError(`Gemini API key error: ${detailedMessage}`, 502)
+        }
+        return responseError(detailedMessage ? `Gemini rejected request: ${detailedMessage}` : 'Check your CV text and try again.', 400)
+      }
+      if (status === 403) {
+        return responseError(
+          detailedMessage
+            ? `Gemini permission error: ${detailedMessage}`
+            : 'Gemini rejected the API key or Generative Language API is disabled. Verify GEMINI_API_KEY in Vercel.',
+          502,
+        )
+      }
+      if (status === 404) {
+        return responseError(
+          'No compatible Gemini model found for this API key. Verify that "Generative Language API" is enabled in your Google Cloud / AI Studio project.',
+          502,
+        )
+      }
+      return responseError(
+        detailedMessage
+          ? `Gemini error: ${detailedMessage}`
+          : 'Google Gemini could not generate a response right now. Try again shortly.',
+        502,
+      )
+    }
+
+    const result: unknown = await workingResponse.json()
+    const text = extractGeminiText(result)
 
     if (!text) {
       console.error('Gemini returned an unexpected response shape.', JSON.stringify(result).slice(0, 500))
@@ -155,7 +318,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { draft: text.trim(), model: activeModel },
+      { draft: text.trim(), model: chosenModel },
       { headers: { 'Cache-Control': 'no-store' } },
     )
   } catch (error) {
