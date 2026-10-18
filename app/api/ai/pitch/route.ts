@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 export const runtime = 'nodejs'
 export const maxDuration = 30
 
-const model = 'llama-3.1-8b-instant'
+const model = 'gemini-2.5-flash'
 const documentTypes = ['master-cv', 'content-writer', 'wordpress'] as const
 type DocumentType = (typeof documentTypes)[number]
 
@@ -17,8 +17,8 @@ export async function POST(request: Request) {
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (authError || !user) return responseError('Sign in again to generate a cover letter.', 401)
 
-  const apiKey = process.env.GROQ_API_KEY
-  if (!apiKey) return responseError('Groq is not configured on the server.', 503)
+  const apiKey = process.env.GEMINI_API_KEY
+  if (!apiKey) return responseError('Gemini is not configured on the server.', 503)
 
   let body: unknown
   try {
@@ -67,84 +67,80 @@ export async function POST(request: Request) {
   }
 
   const jobDescription = (opportunity.description ?? '').slice(0, 8000)
+
+  const prompt = [
+    'Write ONE short cover letter paragraph (4-6 sentences, under 120 words) for a job application form.',
+    'Use only facts from the CV and role description below. Do not invent experience, skills, or achievements.',
+    'Write in first person. No greeting, no sign-off. Plain text only, no markdown.',
+    '',
+    `Role: ${opportunity.title} at ${opportunity.company_name}`,
+    jobDescription ? `Job description:\n${jobDescription}` : 'No job description provided.',
+    `My CV:\n${cvText.slice(0, 15000)}`,
+  ].join('\n')
+
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 20000)
 
   try {
-    const providerResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + apiKey,
-        'Content-Type': 'application/json',
+    const providerResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.4,
+            maxOutputTokens: 300,
+          },
+        }),
+        signal: controller.signal,
+        cache: 'no-store',
       },
-      body: JSON.stringify({
-        model,
-        temperature: 0.4,
-        max_tokens: 400,
-        messages: [
-          {
-            role: 'system',
-            content: `You write cover letter paragraphs for job applications.
-Write ONE short paragraph (4-6 sentences, under 120 words) that the applicant can paste into a job application form's "Cover letter" or "Tell us about yourself" field.
-Rules:
-- Use only facts from the CV and role description provided. Do not invent experience, skills, or achievements.
-- Be specific about why this person fits this role.
-- Write in first person as the applicant.
-- No greeting, no sign-off, no subject line. Just the paragraph.
-- Plain text only, no markdown.`,
-          },
-          {
-            role: 'user',
-            content: [
-              `Role: ${opportunity.title} at ${opportunity.company_name}`,
-              jobDescription ? `Job description:\n${jobDescription}` : 'No job description provided.',
-              `My CV:\n${cvText.slice(0, 15000)}`,
-            ].join('\n\n'),
-          },
-        ],
-      }),
-      signal: controller.signal,
-      cache: 'no-store',
-    })
+    )
 
     if (!providerResponse.ok) {
-      console.error('Groq request failed with status.', providerResponse.status)
+      const errBody: unknown = await providerResponse.json().catch(() => null)
+      console.error('Gemini request failed with status.', providerResponse.status, errBody)
       if (providerResponse.status === 429) {
         return responseError('Rate limit reached. Wait a moment and try again.', 429)
       }
-      if (providerResponse.status === 401 || providerResponse.status === 403) {
-        return responseError('Groq rejected the API key. Check GROQ_API_KEY in the deployment environment.', 502)
+      if (providerResponse.status === 400) {
+        return responseError('Gemini rejected the request. Check your CV text and try again.', 400)
       }
-      return responseError('The AI provider could not generate a draft right now. Try again later.', 502)
+      if (providerResponse.status === 403) {
+        return responseError('Gemini rejected the API key. Check GEMINI_API_KEY in the deployment environment.', 502)
+      }
+      return responseError('The AI provider could not generate a cover letter right now. Try again later.', 502)
     }
 
     const result: unknown = await providerResponse.json()
-    if (
-      !result || typeof result !== 'object' ||
-      !('choices' in result) || !Array.isArray(result.choices)
-    ) {
-      return responseError('The AI provider returned an unexpected response. Try again later.', 502)
-    }
-    const firstChoice: unknown = result.choices[0]
-    if (
-      !firstChoice || typeof firstChoice !== 'object' ||
-      !('message' in firstChoice) || !firstChoice.message ||
-      typeof firstChoice.message !== 'object' ||
-      !('content' in firstChoice.message) ||
-      typeof firstChoice.message.content !== 'string'
-    ) {
+
+    /* Gemini response shape: { candidates: [{ content: { parts: [{ text: "..." }] } }] } */
+    const text =
+      result &&
+      typeof result === 'object' &&
+      'candidates' in result &&
+      Array.isArray((result as { candidates: unknown[] }).candidates) &&
+      (result as { candidates: unknown[] }).candidates.length > 0 &&
+      typeof (result as { candidates: { content?: { parts?: { text?: string }[] } }[] }).candidates[0]?.content?.parts?.[0]?.text === 'string'
+        ? (result as { candidates: { content: { parts: { text: string }[] } }[] }).candidates[0].content.parts[0].text
+        : null
+
+    if (!text) {
+      console.error('Gemini returned an unexpected response shape.', JSON.stringify(result).slice(0, 500))
       return responseError('The AI provider returned an empty response. Try again later.', 502)
     }
 
     return NextResponse.json(
-      { draft: firstChoice.message.content, model },
+      { draft: text.trim(), model },
       { headers: { 'Cache-Control': 'no-store' } },
     )
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
       return responseError('The request timed out. Try again.', 504)
     }
-    console.error('Groq request failed.', error)
+    console.error('Gemini request failed.', error)
     return responseError('Could not reach the AI provider. Check your connection and try again.', 502)
   } finally {
     clearTimeout(timeout)

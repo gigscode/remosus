@@ -153,7 +153,7 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
               </div>
 
               <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
-                Your CV text and opportunity details will be sent to Groq to generate this paragraph. Do not include anything you do not want processed by that service.
+                Your CV text and opportunity details will be sent to Google Gemini to generate this paragraph. Do not include anything you do not want processed by that service.
               </div>
 
               {error && (
@@ -174,7 +174,7 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
                 {generating ? 'Writing…' : 'Generate cover letter paragraph'}
               </Button>
               <p className="text-xs text-slate-500">
-                Powered by Groq · Llama 3.1 8B. Drafts are not saved or sent.
+                Powered by Gemini 2.5 Flash · Free tier. Drafts are not saved or sent.
               </p>
             </div>
           )}
