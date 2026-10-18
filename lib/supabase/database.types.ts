@@ -10,6 +10,22 @@ type Table<Row, Insert, Update = Partial<Insert>> = {
 export type Database = {
   public: {
     Tables: {
+      career_profiles: Table<
+        {
+          id: string
+          user_id: string
+          doc_type: 'master-cv' | 'content-writer' | 'wordpress'
+          content: string
+          updated_at: string
+        },
+        {
+          id?: string
+          user_id: string
+          doc_type: 'master-cv' | 'content-writer' | 'wordpress'
+          content?: string
+          updated_at?: string
+        }
+      >
       profiles: Table<
         { id: string; full_name: string | null; role: string | null; portfolio_url: string | null; skills: string[]; created_at: string },
         { id: string; full_name?: string | null; role?: string | null; portfolio_url?: string | null; skills?: string[]; created_at?: string }

@@ -101,9 +101,9 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
               <Sparkles aria-hidden="true" className="size-5" />
             </span>
             <div>
-              <h2 className="font-semibold text-slate-950">Create a tailored draft</h2>
+              <h2 className="font-semibold text-slate-950">Generate a cover letter paragraph</h2>
               <p className="mt-1 text-sm leading-5 text-slate-600">
-                Pick an opportunity and a CV category. The pitch reads your saved CV text directly.
+                Pick an opportunity and a CV category. You'll get a short paragraph to paste into any job application form.
               </p>
             </div>
           </div>
@@ -153,7 +153,7 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
               </div>
 
               <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
-                Your CV text and opportunity details will be sent to OpenRouter and its model provider. Do not include anything you do not want processed by those services.
+                Your CV text and opportunity details will be sent to Groq to generate this paragraph. Do not include anything you do not want processed by that service.
               </div>
 
               {error && (
@@ -171,10 +171,10 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
                 {generating
                   ? <LoaderCircle aria-hidden="true" data-icon="inline-start" className="animate-spin" />
                   : <Sparkles aria-hidden="true" data-icon="inline-start" />}
-                {generating ? 'Drafting…' : 'Generate reviewable draft'}
+                {generating ? 'Writing…' : 'Generate cover letter paragraph'}
               </Button>
               <p className="text-xs text-slate-500">
-                Free model: NVIDIA Nemotron 3.5 Lightning · 500 output tokens maximum. Drafts are not saved or sent.
+                Powered by Groq · Llama 3.1 8B. Drafts are not saved or sent.
               </p>
             </div>
           )}
@@ -188,7 +188,7 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
               <BriefcaseBusiness aria-hidden="true" className="size-4 text-violet-800" />
               <h2 className="font-semibold text-slate-950">Your draft</h2>
             </div>
-            {draft && <Badge variant="outline">Review before use</Badge>}
+            {draft && <Badge variant="outline">Review before pasting</Badge>}
           </div>
           {draft ? (
             <>
@@ -215,10 +215,10 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
                   : <BriefcaseBusiness aria-hidden="true" className="size-5" />}
               </div>
               <p className="mt-3 text-sm font-medium text-slate-700">
-                {generating ? 'Writing a first draft…' : 'Your editable draft will appear here.'}
+                {generating ? 'Writing your paragraph…' : 'Your editable paragraph will appear here.'}
               </p>
               <p className="mt-1 max-w-xs text-xs leading-5 text-slate-500">
-                Check every claim for accuracy before you use it. The AI can make mistakes.
+                Check every claim for accuracy before you paste it into an application.
               </p>
             </div>
           )}
