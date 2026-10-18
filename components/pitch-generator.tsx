@@ -15,52 +15,39 @@ const documentTypes = [
 ] as const
 
 type DocumentType = (typeof documentTypes)[number]['id']
-type CareerDocument = { name: string; id: string | null }
 
 export function PitchGenerator({ opportunities }: { opportunities: Opportunity[] }) {
   const [opportunityId, setOpportunityId] = useState('')
   const [documentType, setDocumentType] = useState<DocumentType>('master-cv')
-  const [documents, setDocuments] = useState<CareerDocument[]>([])
-  const [loadingDocuments, setLoadingDocuments] = useState(false)
-  const [selectedDocument, setSelectedDocument] = useState('')
+  const [cvText, setCvText] = useState('')
+  const [loadingCv, setLoadingCv] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [draft, setDraft] = useState('')
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
 
+  /* Load saved CV text when category changes */
   useEffect(() => {
     let cancelled = false
-    async function loadDocuments() {
-      setLoadingDocuments(true)
+    async function loadCv() {
+      setLoadingCv(true)
+      setCvText('')
       setError('')
-      setSelectedDocument('')
       const supabase = createClient()
-      const { data: { user }, error: authError } = await supabase.auth.getUser()
-      if (authError || !user) {
-        if (!cancelled) {
-          setError('Sign in again to access your saved CVs.')
-          setLoadingDocuments(false)
-        }
-        return
-      }
-
-      const { data, error: listError } = await supabase.storage
-        .from('career-documents')
-        .list(`${user.id}/${documentType}`, { limit: 50, sortBy: { column: 'updated_at', order: 'desc' } })
+      const { data, error: fetchError } = await supabase
+        .from('career_profiles')
+        .select('content')
+        .eq('doc_type', documentType)
+        .maybeSingle()
       if (cancelled) return
-      if (listError) {
-        setError(`Could not load saved CVs: ${listError.message}`)
-        setDocuments([])
+      if (fetchError) {
+        setError(`Could not load saved CV: ${fetchError.message}`)
       } else {
-        const supported = (data ?? [])
-          .filter((file) => file.id !== null && /\.(pdf|docx|txt)$/i.test(file.name))
-          .map((file) => ({ name: file.name, id: file.id }))
-        setDocuments(supported)
-        if (supported.length === 1) setSelectedDocument(supported[0].name)
+        setCvText(data?.content ?? '')
       }
-      setLoadingDocuments(false)
+      setLoadingCv(false)
     }
-    void loadDocuments()
+    void loadCv()
     return () => { cancelled = true }
   }, [documentType])
 
@@ -72,7 +59,7 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
       const response = await fetch('/api/ai/pitch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ opportunityId, documentType, documentName: selectedDocument }),
+        body: JSON.stringify({ opportunityId, documentType }),
       })
       const result: unknown = await response.json()
       if (!response.ok) {
@@ -102,6 +89,9 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
     }
   }
 
+  const hasCv = cvText.trim().length > 0
+  const canGenerate = !generating && !loadingCv && !!opportunityId && hasCv
+
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(320px,.85fr)]">
       <Card className="border-slate-200 bg-white shadow-sm">
@@ -112,7 +102,9 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
             </span>
             <div>
               <h2 className="font-semibold text-slate-950">Create a tailored draft</h2>
-              <p className="mt-1 text-sm leading-5 text-slate-600">Use a saved opportunity and the most relevant CV to draft a short application email.</p>
+              <p className="mt-1 text-sm leading-5 text-slate-600">
+                Pick an opportunity and a CV category. The pitch reads your saved CV text directly.
+              </p>
             </div>
           </div>
 
@@ -131,7 +123,9 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
                 >
                   <option value="">Choose an opportunity</option>
                   {opportunities.map((opportunity) => (
-                    <option key={opportunity.id} value={opportunity.id}>{opportunity.title} · {opportunity.company_name}</option>
+                    <option key={opportunity.id} value={opportunity.id}>
+                      {opportunity.title} · {opportunity.company_name}
+                    </option>
                   ))}
                 </select>
               </label>
@@ -143,46 +137,45 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
                   onChange={(event) => setDocumentType(event.target.value as DocumentType)}
                   className="min-h-11 rounded-lg border border-slate-300 bg-white px-3 text-sm"
                 >
-                  {documentTypes.map((type) => <option key={type.id} value={type.id}>{type.label}</option>)}
-                </select>
-              </label>
-
-              <label className="flex flex-col gap-2 text-sm font-medium text-slate-700">
-                Saved CV
-                <select
-                  value={selectedDocument}
-                  onChange={(event) => setSelectedDocument(event.target.value)}
-                  disabled={loadingDocuments || documents.length === 0}
-                  className="min-h-11 rounded-lg border border-slate-300 bg-white px-3 text-sm disabled:bg-slate-50"
-                >
-                  <option value="">{loadingDocuments ? 'Loading CVs…' : 'Choose a saved CV'}</option>
-                  {documents.map((document) => (
-                    <option key={document.name} value={document.name}>
-                      {document.name.replace(/^[0-9a-f-]+-/i, '')}
-                    </option>
+                  {documentTypes.map((type) => (
+                    <option key={type.id} value={type.id}>{type.label}</option>
                   ))}
                 </select>
-                <span className="text-xs font-normal text-slate-500">
-                  {documents.length === 0 && !loadingDocuments
-                    ? 'No PDF, DOCX, or TXT CV found in this category. Add one in Profile.'
-                    : 'PDF, DOCX, and TXT are supported for text extraction. DOC files can be stored but not read yet.'}
-                </span>
               </label>
 
-              <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
-                The selected CV and opportunity details will be sent to OpenRouter and its model provider to create this draft. Don’t include information you do not want processed by those services.
+              {/* CV status indicator */}
+              <div className={`rounded-xl border px-4 py-3 text-sm leading-5 ${hasCv ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
+                {loadingCv
+                  ? 'Loading your saved CV…'
+                  : hasCv
+                    ? 'CV text loaded. Ready to generate.'
+                    : 'No CV text saved for this category yet. Go to Profile and paste your CV text there first.'}
               </div>
-              {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{error}</p>}
+
+              <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
+                Your CV text and opportunity details will be sent to OpenRouter and its model provider. Do not include anything you do not want processed by those services.
+              </div>
+
+              {error && (
+                <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+                  {error}
+                </p>
+              )}
+
               <Button
                 type="button"
                 className="w-full sm:w-auto"
-                disabled={generating || loadingDocuments || !opportunityId || !selectedDocument}
+                disabled={!canGenerate}
                 onClick={() => void generatePitch()}
               >
-                {generating ? <LoaderCircle aria-hidden="true" data-icon="inline-start" className="animate-spin" /> : <Sparkles aria-hidden="true" data-icon="inline-start" />}
+                {generating
+                  ? <LoaderCircle aria-hidden="true" data-icon="inline-start" className="animate-spin" />
+                  : <Sparkles aria-hidden="true" data-icon="inline-start" />}
                 {generating ? 'Drafting…' : 'Generate reviewable draft'}
               </Button>
-              <p className="text-xs text-slate-500">Free model: NVIDIA Nemotron 3.5 Lightning · 500 output tokens maximum. Drafts are not saved or sent.</p>
+              <p className="text-xs text-slate-500">
+                Free model: NVIDIA Nemotron 3.5 Lightning · 500 output tokens maximum. Drafts are not saved or sent.
+              </p>
             </div>
           )}
         </CardContent>
@@ -208,17 +201,25 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
                 className="mt-4 min-h-64 flex-1 resize-y rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-800 outline-none focus-visible:border-violet-400 focus-visible:ring-2 focus-visible:ring-violet-100"
               />
               <Button type="button" variant="outline" className="mt-3 self-start" onClick={() => void copyDraft()}>
-                {copied ? <Check aria-hidden="true" data-icon="inline-start" /> : <Clipboard aria-hidden="true" data-icon="inline-start" />}
+                {copied
+                  ? <Check aria-hidden="true" data-icon="inline-start" />
+                  : <Clipboard aria-hidden="true" data-icon="inline-start" />}
                 {copied ? 'Copied' : 'Copy draft'}
               </Button>
             </>
           ) : (
             <div className="flex flex-1 flex-col items-center justify-center py-12 text-center">
               <div className="flex size-11 items-center justify-center rounded-xl bg-slate-50 text-slate-500">
-                {generating ? <LoaderCircle aria-hidden="true" className="size-5 animate-spin" /> : <BriefcaseBusiness aria-hidden="true" className="size-5" />}
+                {generating
+                  ? <LoaderCircle aria-hidden="true" className="size-5 animate-spin" />
+                  : <BriefcaseBusiness aria-hidden="true" className="size-5" />}
               </div>
-              <p className="mt-3 text-sm font-medium text-slate-700">{generating ? 'Writing a first draft…' : 'Your editable draft will appear here.'}</p>
-              <p className="mt-1 max-w-xs text-xs leading-5 text-slate-500">Check every claim for accuracy before you use it. The AI can make mistakes.</p>
+              <p className="mt-3 text-sm font-medium text-slate-700">
+                {generating ? 'Writing a first draft…' : 'Your editable draft will appear here.'}
+              </p>
+              <p className="mt-1 max-w-xs text-xs leading-5 text-slate-500">
+                Check every claim for accuracy before you use it. The AI can make mistakes.
+              </p>
             </div>
           )}
         </CardContent>
