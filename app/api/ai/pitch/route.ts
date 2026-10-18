@@ -4,12 +4,34 @@ import { createClient } from '@/lib/supabase/server'
 export const runtime = 'nodejs'
 export const maxDuration = 30
 
-const model = 'gemini-2.5-flash'
+const defaultModel = 'gemini-2.0-flash'
+const fallbackModel = 'gemini-1.5-flash'
+const configuredModel = process.env.GEMINI_MODEL || defaultModel
+
 const documentTypes = ['master-cv', 'content-writer', 'wordpress'] as const
 type DocumentType = (typeof documentTypes)[number]
 
 function responseError(message: string, status: number) {
   return NextResponse.json({ error: message }, { status })
+}
+
+async function callGemini(modelName: string, prompt: string, apiKey: string, signal: AbortSignal) {
+  return fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.4,
+          maxOutputTokens: 300,
+        },
+      }),
+      signal,
+      cache: 'no-store',
+    },
+  )
 }
 
 export async function POST(request: Request) {
@@ -18,7 +40,7 @@ export async function POST(request: Request) {
   if (authError || !user) return responseError('Sign in again to generate a cover letter.', 401)
 
   const apiKey = process.env.GEMINI_API_KEY
-  if (!apiKey) return responseError('Gemini is not configured on the server.', 503)
+  if (!apiKey) return responseError('Gemini is not configured on the server. Set GEMINI_API_KEY in your environment.', 503)
 
   let body: unknown
   try {
@@ -38,7 +60,7 @@ export async function POST(request: Request) {
     return responseError('Choose a valid CV category.', 400)
   }
 
-  /* Read opportunity and CV text in parallel — both are fast DB reads */
+  /* Read opportunity and CV text in parallel, both are fast DB reads */
   const [{ data: opportunity, error: opportunityError }, { data: profile, error: profileError }] = await Promise.all([
     supabase
       .from('opportunities')
@@ -82,34 +104,34 @@ export async function POST(request: Request) {
   const timeout = setTimeout(() => controller.abort(), 20000)
 
   try {
-    const providerResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.4,
-            maxOutputTokens: 300,
-          },
-        }),
-        signal: controller.signal,
-        cache: 'no-store',
-      },
-    )
+    let activeModel = configuredModel
+    let providerResponse = await callGemini(activeModel, prompt, apiKey, controller.signal)
+
+    /* If the requested model is not found (404), attempt automatic fallback to gemini-1.5-flash */
+    if (providerResponse.status === 404 && activeModel !== fallbackModel) {
+      console.warn(`Gemini model ${activeModel} returned 404, falling back to ${fallbackModel}`)
+      activeModel = fallbackModel
+      providerResponse = await callGemini(activeModel, prompt, apiKey, controller.signal)
+    }
 
     if (!providerResponse.ok) {
       const errBody: unknown = await providerResponse.json().catch(() => null)
-      console.error('Gemini request failed with status.', providerResponse.status, errBody)
+      console.error('Gemini request failed with status.', providerResponse.status, JSON.stringify(errBody))
       if (providerResponse.status === 429) {
         return responseError('Rate limit reached. Wait a moment and try again.', 429)
       }
       if (providerResponse.status === 400) {
+        const errorMsg = (errBody as { error?: { message?: string } })?.error?.message ?? ''
+        if (errorMsg.toLowerCase().includes('api key')) {
+          return responseError('Gemini rejected the API key. Verify GEMINI_API_KEY in your deployment environment.', 502)
+        }
         return responseError('Gemini rejected the request. Check your CV text and try again.', 400)
       }
       if (providerResponse.status === 403) {
-        return responseError('Gemini rejected the API key. Check GEMINI_API_KEY in the deployment environment.', 502)
+        return responseError('Gemini rejected the API key or permissions. Check GEMINI_API_KEY in the deployment environment.', 502)
+      }
+      if (providerResponse.status === 404) {
+        return responseError(`Gemini model "${activeModel}" was not found. Please use a supported model such as gemini-2.0-flash or gemini-1.5-flash.`, 502)
       }
       return responseError('The AI provider could not generate a cover letter right now. Try again later.', 502)
     }
@@ -133,7 +155,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { draft: text.trim(), model },
+      { draft: text.trim(), model: activeModel },
       { headers: { 'Cache-Control': 'no-store' } },
     )
   } catch (error) {

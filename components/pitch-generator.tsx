@@ -174,7 +174,7 @@ export function PitchGenerator({ opportunities }: { opportunities: Opportunity[]
                 {generating ? 'Writing…' : 'Generate cover letter paragraph'}
               </Button>
               <p className="text-xs text-slate-500">
-                Powered by Gemini 2.5 Flash · Free tier. Drafts are not saved or sent.
+                Powered by Gemini 2.0 Flash · Free tier. Drafts are not saved or sent.
               </p>
             </div>
           )}
