@@ -83,8 +83,8 @@ async function executeGeminiRequest(
         },
       ],
       generationConfig: {
-        temperature: 0.4,
-        maxOutputTokens: 300,
+        temperature: 0.5,
+        maxOutputTokens: 2048,
       },
     }),
     signal,
@@ -108,18 +108,22 @@ function extractGeminiText(result: unknown): string | null {
 
   /* Filter out thought parts from reasoning models if present */
   const answerParts = parts.filter((part) => !part.thought && typeof part.text === 'string')
+  let rawText = ''
   if (answerParts.length > 0) {
-    const combined = answerParts.map((p) => p.text?.trim() || '').filter(Boolean).join('\n')
-    if (combined) return combined
-  }
-
-  /* Fallback: extract text from any part */
-  for (const part of parts) {
-    if (typeof part.text === 'string' && part.text.trim()) {
-      return part.text.trim()
+    rawText = answerParts.map((p) => p.text?.trim() || '').filter(Boolean).join('\n\n')
+  } else {
+    for (const part of parts) {
+      if (typeof part.text === 'string' && part.text.trim()) {
+        rawText = part.text.trim()
+        break
+      }
     }
   }
-  return null
+
+  if (!rawText) return null
+
+  /* Strip wrapping quotes if the model wrapped the paragraph in quotation marks */
+  return rawText.replace(/^["'“”]+|["'“”]+$/g, '').trim()
 }
 
 export async function POST(request: Request) {
@@ -181,13 +185,13 @@ export async function POST(request: Request) {
   const jobDescription = (opportunity.description ?? '').slice(0, 8000)
 
   const prompt = [
-    'Write ONE short cover letter paragraph (4-6 sentences, under 120 words) for a job application form.',
-    'Use only facts from the CV and role description below. Do not invent experience, skills, or achievements.',
-    'Write in first person. No greeting, no sign-off. Plain text only, no markdown.',
+    'Write a strong, complete cover letter paragraph (4 to 6 complete sentences, approximately 100-140 words) that an applicant can paste into a job application form.',
+    'Highlight relevant skills and direct experience from the CV that align with the role description below. Do not invent experience, skills, or metrics.',
+    'Write in the first person ("I"). Do not include any greeting, subject line, or sign-off. Ensure all sentences are fully completed. Output plain text only without markdown.',
     '',
-    `Role: ${opportunity.title} at ${opportunity.company_name}`,
-    jobDescription ? `Job description:\n${jobDescription}` : 'No job description provided.',
-    `My CV:\n${cvText.slice(0, 15000)}`,
+    `Target Role: ${opportunity.title} at ${opportunity.company_name}`,
+    jobDescription ? `Job Description:\n${jobDescription}` : 'No job description provided.',
+    `Candidate CV:\n${cvText.slice(0, 15000)}`,
   ].join('\n')
 
   const controller = new AbortController()
