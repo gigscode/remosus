@@ -48,7 +48,7 @@ const navItems = [
   { label: 'Discover', key: 'discovery', icon: Search },
   { label: 'Leads', key: 'opportunities', icon: Target },
   { label: 'Campaigns', key: 'campaigns', icon: FolderKanban },
-  { label: 'Cover letter', key: 'pitch', icon: BriefcaseBusiness },
+  { label: 'Cover letter & DM', key: 'pitch', icon: BriefcaseBusiness },
   { label: 'Outreach', key: 'outbound', icon: Mail },
   { label: 'Profile', key: 'settings', icon: Settings2 },
 ]

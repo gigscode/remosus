@@ -153,20 +153,20 @@ export function LoginForm({
   return (
     <div className="min-h-screen bg-[#fbfaf7]">
       <NavBar />
-      <main className="flex min-h-[calc(100vh-80px)] items-center justify-center px-4 py-10">
-      <Card className="w-full max-w-md border-slate-200/80 bg-white shadow-sm">
-        {/* ── Card header: heading + subtitle only (logo lives in the top nav) ── */}
-        <CardHeader className="items-center pb-2 pt-8 text-center">
-          {/* Mode-aware heading */}
-          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
-            {heading}
-          </h1>
+      <main className="flex min-h-[calc(100vh-100px)] items-center justify-center px-4 py-8 sm:py-12">
+        <div className="w-full max-w-md">
+          <Card className="border-slate-200/90 bg-white shadow-sm">
+            <CardHeader className="items-center pb-2 pt-8 text-center">
+              {/* Mode-aware heading */}
+              <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+                {heading}
+              </h1>
 
-          {/* Mode-aware subtitle */}
-          <p className="mt-2 max-w-xs text-sm leading-6 text-slate-500">
-            {subtitle}
-          </p>
-        </CardHeader>
+              {/* Mode-aware subtitle */}
+              <p className="mt-2 max-w-xs text-sm leading-6 text-slate-500">
+                {subtitle}
+              </p>
+            </CardHeader>
 
         <CardContent className="px-6 pb-8 pt-6 sm:px-8">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -310,6 +310,7 @@ export function LoginForm({
           )}
         </CardContent>
       </Card>
+        </div>
       </main>
     </div>
   )

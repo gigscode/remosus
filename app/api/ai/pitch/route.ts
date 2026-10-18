@@ -7,6 +7,9 @@ export const maxDuration = 30
 const documentTypes = ['master-cv', 'content-writer', 'wordpress'] as const
 type DocumentType = (typeof documentTypes)[number]
 
+const pitchFormats = ['cover-letter', 'cold-dm', 'outreach-email'] as const
+type PitchFormat = (typeof pitchFormats)[number]
+
 function responseError(message: string, status: number) {
   return NextResponse.json({ error: message }, { status })
 }
@@ -145,7 +148,11 @@ export async function POST(request: Request) {
 
   if (!body || typeof body !== 'object') return responseError('Invalid request.', 400)
   const values = body as Record<string, unknown>
-  const { opportunityId, documentType } = values
+  const { opportunityId, documentType, format: rawFormat } = values
+  const format: PitchFormat =
+    typeof rawFormat === 'string' && pitchFormats.includes(rawFormat as PitchFormat)
+      ? (rawFormat as PitchFormat)
+      : 'cover-letter'
 
   if (typeof opportunityId !== 'string' || opportunityId.length > 100) {
     return responseError('Choose an opportunity before generating.', 400)
@@ -184,10 +191,41 @@ export async function POST(request: Request) {
 
   const jobDescription = (opportunity.description ?? '').slice(0, 8000)
 
+  let promptInstructions: string[] = []
+
+  if (format === 'cold-dm') {
+    promptInstructions = [
+      'Write a concise, high-converting cold direct message (DM) for LinkedIn or Twitter/X (strictly 3 to 4 short sentences, under 80 words total) sent directly to the hiring manager or founder.',
+      'Rules:',
+      '1. Start with an engaging, respectful opening acknowledging the company and the specific role.',
+      '2. Highlight ONE specific, high-impact skill or relevant project from the candidate CV that directly solves a need for this role.',
+      '3. End with a low-friction, friendly call to action (e.g. asking if they are open to a brief 5-minute chat next week, or if you can share a link to your work).',
+      '4. Sound like an authentic, articulate human professional, not a generic AI bot or pushy marketer.',
+      '5. Output plain text only without markdown, hashtags, or bullet points.',
+      '6. Use only facts from the candidate CV. Do not invent experience or credentials.',
+    ]
+  } else if (format === 'outreach-email') {
+    promptInstructions = [
+      'Write a concise, compelling cold outreach email to the hiring manager or founder for this opportunity.',
+      'Rules:',
+      '1. First line must start with: Subject: [Short, curiosity-driven subject line under 8 words]',
+      '2. Follow with a 2-paragraph email body (under 120 words total).',
+      '3. Paragraph 1: Why you are reaching out and a genuine observation about the company or the role.',
+      '4. Paragraph 2: Direct match between candidate skills in the CV and role requirements, ending with a low-pressure invitation to connect.',
+      '5. Use a warm, professional first-person voice. Use [Name] as the recipient name placeholder.',
+      '6. Plain text only without markdown.',
+      '7. Use only facts from the candidate CV. Do not invent experience or credentials.',
+    ]
+  } else {
+    promptInstructions = [
+      'Write a strong, complete cover letter paragraph (4 to 6 complete sentences, approximately 100-140 words) that an applicant can paste into a job application form.',
+      'Highlight relevant skills and direct experience from the CV that align with the role description below. Do not invent experience, skills, or metrics.',
+      'Write in the first person ("I"). Do not include any greeting, subject line, or sign-off. Ensure all sentences are fully completed. Output plain text only without markdown.',
+    ]
+  }
+
   const prompt = [
-    'Write a strong, complete cover letter paragraph (4 to 6 complete sentences, approximately 100-140 words) that an applicant can paste into a job application form.',
-    'Highlight relevant skills and direct experience from the CV that align with the role description below. Do not invent experience, skills, or metrics.',
-    'Write in the first person ("I"). Do not include any greeting, subject line, or sign-off. Ensure all sentences are fully completed. Output plain text only without markdown.',
+    ...promptInstructions,
     '',
     `Target Role: ${opportunity.title} at ${opportunity.company_name}`,
     jobDescription ? `Job Description:\n${jobDescription}` : 'No job description provided.',
@@ -322,7 +360,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { draft: text.trim(), model: chosenModel },
+      { draft: text.trim(), model: chosenModel, format },
       { headers: { 'Cache-Control': 'no-store' } },
     )
   } catch (error) {
