@@ -346,28 +346,26 @@ export function JobDetailModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex flex-col gap-3 border-t border-slate-100 bg-slate-50/80 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2.5 border-t border-slate-100 bg-slate-50/80 p-4 sm:p-5 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
             onClick={handleToggleSave}
-            className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border px-5 text-sm font-bold transition-all ${
+            className={`inline-flex w-full sm:w-auto min-h-11 items-center justify-center gap-2 rounded-xl border px-5 text-sm font-bold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7c3aed] ${
               saved
                 ? 'border-rose-200 bg-rose-50 text-rose-600'
                 : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
-            } ${pop ? 'scale-105' : 'scale-100'}`}
+            } ${pop ? 'scale-[1.02]' : 'scale-100'}`}
           >
             <Heart className={`size-4 ${saved ? 'fill-rose-500 text-rose-500' : ''}`} />
             {saved ? 'Saved to workspace' : 'Save lead'}
           </button>
 
-          <div className="flex items-center gap-2">
-            <Link
-              href="/login?mode=sign-up"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#573da5] px-6 text-sm font-bold text-white shadow-md transition-all hover:bg-[#463087]"
-            >
-              Track in Remosus <ArrowUpRight className="size-4" />
-            </Link>
-          </div>
+          <Link
+            href="/login?mode=sign-up"
+            className="inline-flex w-full sm:w-auto min-h-11 items-center justify-center gap-2 rounded-xl bg-[#7c3aed] px-6 text-sm font-bold text-white shadow-sm transition-all hover:bg-[#6d28d9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7c3aed]"
+          >
+            Track in Remosus <ArrowUpRight className="size-4" />
+          </Link>
         </div>
       </div>
     </div>

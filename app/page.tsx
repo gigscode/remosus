@@ -21,6 +21,7 @@ import {
   Send,
   ShieldCheck,
   Target,
+  X,
 } from 'lucide-react'
 import { JobCard, JobDetailModal, type JobCardData } from '@/components/job-card'
 
@@ -587,27 +588,36 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════
-          TRUST & CAPABILITY RIBBON
+          TRUST & CAPABILITY CONTINUOUS MARQUEE
       ══════════════════════════════════════ */}
-      <div className="hidden sm:block border-y border-slate-200/80 bg-white py-4">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-          <p className="mb-4 text-center text-xs font-bold uppercase tracking-widest text-slate-400">
+      <div className="border-y border-slate-200/80 bg-white py-3.5 sm:py-4">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <p className="mb-3 text-center text-[11px] font-bold uppercase tracking-widest text-slate-400 sm:text-xs">
             Built for people who know the African remote job search hustle
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-center sm:gap-x-12">
-            {[
-              { icon: ShieldCheck, label: 'Direct Feed Verification' },
-              { icon: Compass, label: 'Curated for Africa & Global' },
-              { icon: FolderKanban, label: 'Personal Opportunity Pipeline' },
-              { icon: CheckCircle2, label: '100% Free & Transparent' },
-            ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2 text-xs font-bold text-slate-700">
-                <div className="grid size-5 place-items-center rounded-full bg-[#f3e8ff] text-[#7c3aed]">
-                  <Icon className="size-3.5" />
+          <div className="marquee-mask relative overflow-hidden py-0.5">
+            <div className="animate-marquee flex items-center gap-4 sm:gap-6">
+              {[
+                { icon: ShieldCheck, label: 'Direct Feed Verification' },
+                { icon: Compass, label: 'Curated for Africa & Global' },
+                { icon: FolderKanban, label: 'Personal Opportunity Pipeline' },
+                { icon: CheckCircle2, label: '100% Free & Transparent' },
+                { icon: ShieldCheck, label: 'Direct Feed Verification' },
+                { icon: Compass, label: 'Curated for Africa & Global' },
+                { icon: FolderKanban, label: 'Personal Opportunity Pipeline' },
+                { icon: CheckCircle2, label: '100% Free & Transparent' },
+              ].map(({ icon: Icon, label }, index) => (
+                <div
+                  key={`${label}-${index}`}
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full border border-slate-200/80 bg-slate-50/80 px-3.5 py-1.5 text-xs font-bold text-slate-700 shadow-2xs transition-colors hover:border-violet-200 hover:bg-violet-50/60"
+                >
+                  <div className="grid size-5 place-items-center rounded-full bg-[#f3e8ff] text-[#7c3aed]">
+                    <Icon className="size-3" />
+                  </div>
+                  <span>{label}</span>
                 </div>
-                {label}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -986,22 +996,31 @@ export default function HomePage() {
           LIVE TOAST NOTIFICATION
       ══════════════════════════════════════ */}
       {toastMessage && (
-        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 flex items-center gap-3 rounded-full border border-violet-200 bg-white/95 px-5 py-3 text-xs font-bold text-slate-800 shadow-xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-4">
-          <CheckCircle2 className="size-4 text-emerald-600" />
-          <span>{toastMessage}</span>
-          <Link
-            href="/login?mode=sign-up"
-            className="ml-2 rounded-full bg-[#7c3aed] px-3 py-1 text-white hover:bg-[#6d28d9]"
-          >
-            Sign up to sync
-          </Link>
-          <button
-            onClick={() => setToastMessage(null)}
-            aria-label="Dismiss notification"
-            className="ml-1 text-slate-400 hover:text-slate-600"
-          >
-            ✕
-          </button>
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-4 sm:bottom-6 left-1/2 z-60 -translate-x-1/2 flex w-[calc(100%-2rem)] sm:w-auto max-w-md items-center justify-between gap-2.5 rounded-2xl sm:rounded-full border border-slate-200/90 bg-white/95 px-4 py-3 sm:px-5 text-xs font-medium text-slate-800 shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-3"
+        >
+          <div className="flex min-w-0 items-center gap-2">
+            <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
+            <span className="truncate text-slate-700 font-semibold">{toastMessage}</span>
+          </div>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <Link
+              href="/login?mode=sign-up"
+              className="inline-flex shrink-0 items-center whitespace-nowrap rounded-full bg-[#7c3aed] px-3.5 py-1.5 text-xs font-bold text-white shadow-xs transition-all hover:bg-[#6d28d9] focus-visible:outline-2 focus-visible:outline-[#7c3aed]"
+            >
+              Sign up to sync
+            </Link>
+            <button
+              type="button"
+              onClick={() => setToastMessage(null)}
+              aria-label="Dismiss notification"
+              className="grid size-6 shrink-0 place-items-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-2 focus-visible:outline-[#7c3aed]"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
         </div>
       )}
     </div>
