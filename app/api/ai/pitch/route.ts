@@ -4,6 +4,7 @@ import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import { createClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
+export const maxDuration = 60
 
 const bucket = 'career-documents'
 const maxDocumentSize = 10 * 1024 * 1024
