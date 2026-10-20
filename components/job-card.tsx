@@ -10,7 +10,6 @@ import {
   ArrowUpRight,
   X,
   Check,
-  ShieldCheck,
   Sparkles,
   Briefcase,
   ChevronRight,
@@ -254,7 +253,7 @@ export function JobDetailModal({
                   {job.category}
                 </span>
                 <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600">
-                  <ShieldCheck aria-hidden="true" className="size-3.5" /> Verified source
+                  Sample role
                 </span>
               </div>
               <h2 id="job-modal-title" className="mt-2 text-xl font-extrabold text-slate-900 sm:text-2xl">

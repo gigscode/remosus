@@ -70,7 +70,7 @@ function NavBar() {
             href="#latest-jobs"
             className="hidden text-xs font-semibold text-slate-600 transition-colors hover:text-slate-900 md:inline focus-visible:outline-2 focus-visible:outline-[#7c3aed] rounded"
           >
-            Latest jobs
+            Sample roles
           </a>
           <a
             href="#transparency"
@@ -373,12 +373,12 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 text-center">
           {/* Centered Headline with vibrant color-accented font */}
           <h1 className="mx-auto max-w-4xl text-[clamp(2.75rem,6.5vw,5.25rem)] font-extrabold leading-[1.04] tracking-[-0.045em] text-slate-900">
-            Take control of your <span className="text-[#7c3aed]">remote career</span>
+            A clearer <span className="text-[#7c3aed]">remote job search</span> for Nigerians and Africans
           </h1>
 
           {/* Subtitle speaking directly to African remote talent */}
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg sm:leading-8">
-            Landing a global remote role from Nigeria or anywhere in Africa is hard enough. Remosus curates verified remote feeds, filters for real location eligibility, and keeps your applications in one workspace.
+            Finding remote work from Nigeria or elsewhere in Africa can mean sorting through listings that say &ldquo;remote&rdquo; but do not spell out where you can work. Remosus brings roles from selected feeds into one place, matches role and location text, and helps you organize applications. Always confirm eligibility on the original listing.
           </p>
 
           {/* Dual Pill Action Controls */}
@@ -387,7 +387,7 @@ export default function HomePage() {
               href="/login?mode=sign-up"
               className="inline-flex min-h-[3.15rem] items-center justify-center gap-2 rounded-full bg-[#7c3aed] px-8 text-sm font-bold text-white shadow-[0_12px_28px_-6px_rgba(124,58,237,0.55)] transition-all hover:-translate-y-0.5 hover:bg-[#6d28d9] hover:shadow-[0_16px_32px_-6px_rgba(124,58,237,0.65)] focus-visible:outline-2 focus-visible:outline-[#7c3aed]"
             >
-              Start searching free <ArrowRight aria-hidden="true" className="size-4" />
+              Start your search <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
 
             <a
@@ -395,24 +395,27 @@ export default function HomePage() {
               className="inline-flex min-h-[3.15rem] items-center justify-center gap-2.5 rounded-full border border-slate-200/90 bg-white/95 px-7 text-sm font-bold text-slate-700 shadow-2xs backdrop-blur-xs transition-all hover:border-slate-300 hover:bg-white focus-visible:outline-2 focus-visible:outline-[#7c3aed]"
             >
               <Play aria-hidden="true" className="size-3.5 fill-[#7c3aed] text-[#7c3aed]" />
-              Explore latest roles
+              Browse sample roles
             </a>
           </div>
 
           <p className="mt-4 text-xs font-medium text-slate-400">
-            Honest location text matching · No subscription required to search
+            Role and location text matching · Check eligibility with each employer
           </p>
 
           {/* ══════════════════════════════════════
               3-PIECE VISUAL STAGE (Center Phone + Left & Right Floating Cards)
           ══════════════════════════════════════ */}
           <div className="relative mx-auto mt-14 max-w-5xl sm:mt-18">
+            <p className="mb-4 text-xs font-medium text-slate-400">
+              Illustrative workspace preview with sample names and figures
+            </p>
 
             {/* Left Floating Card: Recent Leads + Handwritten Callout */}
             <div className="hidden lg:block absolute -left-4 top-12 z-20 w-72 text-left animate-in fade-in slide-in-from-left-4 duration-500">
               <div className="mb-2.5 flex items-center gap-2 pl-4">
                 <span className="font-serif italic text-sm font-semibold tracking-wide text-[#7c3aed]">
-                  Curated daily, never generic
+                  Roles from selected feeds
                 </span>
                 <svg className="size-7 text-[#7c3aed]" fill="none" viewBox="0 0 32 32">
                   <path
@@ -427,7 +430,7 @@ export default function HomePage() {
 
               <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xl backdrop-blur-md">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                  <span className="text-xs font-bold text-slate-800">Recent Leads</span>
+                  <span className="text-xs font-bold text-slate-800">Example leads</span>
                   <span className="text-[0.7rem] font-bold text-[#7c3aed]">3 saved</span>
                 </div>
 
@@ -477,7 +480,7 @@ export default function HomePage() {
 
               <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xl backdrop-blur-md">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                  <span className="text-xs font-bold text-slate-800">Weekly Goal</span>
+                  <span className="text-xs font-bold text-slate-800">Example weekly goal</span>
                   <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[0.68rem] font-bold text-emerald-700">
                     On track
                   </span>
@@ -530,16 +533,16 @@ export default function HomePage() {
 
                 <div className="mt-3 rounded-2xl bg-slate-50/80 p-3 text-left">
                   <p className="text-[0.7rem] font-bold text-slate-400">Welcome back</p>
-                  <h3 className="text-sm font-extrabold text-slate-900">Opportunity Pipeline</h3>
+                  <h3 className="text-sm font-extrabold text-slate-900">Example opportunity pipeline</h3>
 
                   <div className="mt-3 rounded-2xl bg-[#7c3aed] p-4 text-white shadow-md">
                     <span className="text-[0.7rem] font-bold uppercase tracking-wider text-violet-200">
-                      Curated remote roles
+                      Roles from selected feeds
                     </span>
                     <div className="mt-1 flex items-baseline justify-between">
-                      <span className="text-2xl font-extrabold tracking-tight">Live</span>
+                      <span className="text-2xl font-extrabold tracking-tight">Preview</span>
                       <span className="rounded-full bg-white/20 px-2 py-0.5 text-[0.65rem] font-bold text-emerald-300">
-                        Fresh daily
+                        Selected feeds
                       </span>
                     </div>
 
@@ -593,19 +596,19 @@ export default function HomePage() {
       <div className="border-y border-slate-200/80 bg-white py-3.5 sm:py-4">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <p className="mb-3 text-center text-[11px] font-bold uppercase tracking-widest text-slate-400 sm:text-xs">
-            Built for people who know the African remote job search hustle
+            Built for remote job seekers in Nigeria and across Africa
           </p>
           <div className="marquee-mask relative overflow-hidden py-0.5">
             <div className="animate-marquee flex items-center gap-4 sm:gap-6">
               {[
-                { icon: ShieldCheck, label: 'Direct Feed Verification' },
-                { icon: Compass, label: 'Curated for Africa & Global' },
-                { icon: FolderKanban, label: 'Personal Opportunity Pipeline' },
-                { icon: CheckCircle2, label: '100% Free & Transparent' },
-                { icon: ShieldCheck, label: 'Direct Feed Verification' },
-                { icon: Compass, label: 'Curated for Africa & Global' },
-                { icon: FolderKanban, label: 'Personal Opportunity Pipeline' },
-                { icon: CheckCircle2, label: '100% Free & Transparent' },
+                { icon: ShieldCheck, label: 'Links to original listings' },
+                { icon: Compass, label: 'Role and location matching' },
+                { icon: FolderKanban, label: 'Application organization' },
+                { icon: CheckCircle2, label: 'Selected remote-job feeds' },
+                { icon: ShieldCheck, label: 'Links to original listings' },
+                { icon: Compass, label: 'Role and location matching' },
+                { icon: FolderKanban, label: 'Application organization' },
+                { icon: CheckCircle2, label: 'Selected remote-job feeds' },
               ].map(({ icon: Icon, label }, index) => (
                 <div
                   key={`${label}-${index}`}
@@ -648,14 +651,14 @@ export default function HomePage() {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
-                  Latest jobs
+                  Explore sample roles
                 </h2>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 ring-1 ring-emerald-200">
                   <span className="size-2 rounded-full bg-emerald-500" /> Sample roles
                 </span>
               </div>
               <p className="mt-1.5 text-sm font-medium text-slate-500 sm:text-base">
-                A sample of the remote roles we surface. Sign up to search the full live feed. Click any role to preview requirements before applying.
+                These examples show how role previews work. They are not current vacancies. In your account, you can search selected feeds and check each employer&apos;s location and work-authorization rules before applying.
               </p>
             </div>
             <Link
@@ -757,10 +760,10 @@ export default function HomePage() {
                 </div>
 
                 <h3 className="mt-5 text-base font-extrabold tracking-tight text-slate-900">
-                  Filter where you&apos;re actually eligible
+                  Search by role and location terms
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                  Tired of finding &ldquo;remote&rdquo; roles only to hit a country restriction on the final dropdown? We filter for listings that explicitly accept Nigeria, Africa, or genuine worldwide applicants.
+                  Remote can mean different things to different employers. We match role and location terms in selected listings. Those matches are a starting point, not confirmation that an employer accepts applicants from Nigeria or elsewhere in Africa.
                 </p>
               </div>
 
@@ -771,8 +774,8 @@ export default function HomePage() {
                   <span className="rounded-md bg-emerald-100/80 px-2 py-0.5 text-emerald-800">Region: Nigeria / Africa / Global</span>
                 </div>
                 <div className="flex items-center justify-between text-[0.7rem] font-semibold text-slate-700 pt-1.5 border-t border-slate-200/60">
-                  <span>Verified eligible roles</span>
-                  <span className="text-emerald-600 font-bold">Live feed</span>
+                  <span>Location text matched</span>
+                  <span className="text-emerald-600 font-bold">Selected feeds</span>
                 </div>
               </div>
             </div>
@@ -830,7 +833,7 @@ export default function HomePage() {
                   Stay sane through every follow-up
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-slate-600">
-                  Sending applications into silence is draining. Remosus gives you a quiet, organized system to track where you applied, log dates, and follow up with confidence until you land the role.
+                  Keep saved roles in one place, update their status, and return to the original listing when you are ready to apply.
                 </p>
               </div>
 
@@ -891,7 +894,7 @@ export default function HomePage() {
               {
                 question: 'What data do you store about me?',
                 answer:
-                  'We store your account credentials and the leads and notes you save in your workspace. We do not sell your data or share it with third parties.',
+                  'Your account and saved opportunities are handled through Supabase. Production page views are measured with Vercel Analytics.',
               },
             ].map((item) => (
               <FaqItem key={item.question} question={item.question} answer={item.answer} />
@@ -910,17 +913,17 @@ export default function HomePage() {
               Keep moving forward
             </span>
             <h2 className="mt-4 text-3xl font-extrabold leading-tight tracking-[-0.04em] sm:text-4xl lg:text-5xl">
-              Your next remote opportunity is out there. <span className="text-violet-400">Stay consistent.</span>
+              Make your remote job search easier to manage. <span className="text-violet-400">Keep moving.</span>
             </h2>
             <p className="mx-auto mt-5 max-w-lg text-sm leading-relaxed text-slate-300 sm:text-base">
-              Stop losing tabs and guessing eligibility. Build a daily search habit with a personal workspace that has your back.
+              Keep promising roles and application notes together. Check each employer&apos;s location and work-authorization rules before you apply.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
               <Link
                 href="/login?mode=sign-up"
                 className="inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-full bg-[#7c3aed] px-8 text-sm font-bold text-white shadow-lg transition-all hover:bg-[#6d28d9]"
               >
-                Start your search free <ArrowRight aria-hidden="true" className="size-4" />
+                Start your search <ArrowRight aria-hidden="true" className="size-4" />
               </Link>
               <Link
                 href="/login"
@@ -954,7 +957,7 @@ export default function HomePage() {
                 </span>
               </Link>
               <p className="max-w-xs text-xs leading-relaxed text-slate-500">
-                Built to help remote digital workers in Africa search, organize, and follow through. All listings link to original sources.
+                For Nigerians and Africans looking for remote work. Live feed roles link to their original listings. The role examples on this page are illustrative.
               </p>
             </div>
 
@@ -963,7 +966,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-3">
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Product</p>
                 <a href="#how-it-works" className="font-semibold text-slate-600 transition-colors hover:text-[#7c3aed]">How it works</a>
-                <a href="#latest-jobs" className="font-semibold text-slate-600 transition-colors hover:text-[#7c3aed]">Latest jobs</a>
+                <a href="#latest-jobs" className="font-semibold text-slate-600 transition-colors hover:text-[#7c3aed]">Sample roles</a>
                 <a href="#transparency" className="font-semibold text-slate-600 transition-colors hover:text-[#7c3aed]">Transparency</a>
               </div>
               <div className="flex flex-col gap-3">

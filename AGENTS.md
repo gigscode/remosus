@@ -16,7 +16,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Use `.env.example` as the safe template and replace the placeholder value locally only.
 - If a key is entered into the shell, terminal history, logs, or tool output, rotate it immediately.
 
-## GigsHQ design and engineering standards
+## Remosus design and engineering standards
 
 These rules apply to all UI work in this project. Follow them without exception.
 
@@ -39,8 +39,9 @@ These rules apply to all UI work in this project. Follow them without exception.
 - Body minimum: `text-base leading-relaxed` (`sm:text-lg sm:leading-8` in hero).
 - Never use `font-light` or `font-thin` for body copy.
 
-### Copy voice and tone
-
+### Product identity and copy voice
+- The product and public-facing brand are **Remosus**. `gigshq` is a legacy repository/workspace name only. Do not use GigsHQ in user-facing copy or product metadata.
+- The public site is for job seekers in Nigeria first, and across Africa broadly. Do not narrow the audience to the owner's profile.
 - Write as a knowledgeable friend, not a brand manager. Speak directly to African remote job seekers: Nigeria, Ghana, Kenya, and the continent broadly.
 - Be empathetic. Acknowledge real obstacles: time zones, visa walls, bandwidth drops, inconsistent hiring signals.
 - Keep sentences short and grounded. Avoid corporate buzzwords: "synergy", "leverage", "ecosystem", "empower", "robust", "seamless", "supercharge".

@@ -1,4 +1,10 @@
-# Agent Instructions: Job and Gig Sourcing Automation
+# Agent Instructions: Remosus
+
+## Product Identity & Audience
+- The product and public-facing brand are **Remosus**. `gigshq` is a legacy repository/workspace name only. Do not use GigsHQ in user-facing copy, page metadata, or product descriptions.
+- The public site is for job seekers in Nigeria first, and across Africa broadly. Keep Nigerian and African needs central while recognizing that remote-job location and work-authorization rules vary by employer.
+- Position Remosus as a way to search selected remote-job feeds and organize applications. Do not claim that a location-text match confirms eligibility, that listings are comprehensive, or that every listed role is current.
+- Keep public marketing distinct from the current implementation and the owner's career profile. Do not narrow the site's audience to the owner or infer unimplemented product capabilities.
 
 ## Core Intelligence & Truthfulness
 1. Zero Hallucination Policy: State "I don't know" or request missing context immediately when information is absent. Never guess, invent facts, fabricate data, or make assumptions.
@@ -48,8 +54,14 @@
 - Email outbound tracking and analytics
 - Settings and profile context
 
+## Marketing & Measurement
+- Use `.agents/product-marketing.md` for approved product positioning and claims. Update it when verified product capabilities or audience priorities change.
+- Public role cards on the landing page are illustrative sample data, not current vacancies. Label them clearly and never present their companies, compensation, or dates as verified opportunities.
+- Production page-view analytics are enabled through Vercel Analytics. Do not add custom event tracking or another paid analytics service without approval; Vercel currently limits custom events to Pro and Enterprise plans.
+- A CTA click is not a completed registration. Do not report sign-up conversions without measuring the actual account creation flow.
+
 ## Personal Use & Service Budget
-- remosus is a personal job-search tool for one user, intended to help its owner find work. Do not build team, multi-tenant, collaboration, invitation, or shared-workspace features unless explicitly requested.
+- Remosus is for job seekers in Nigeria and across Africa. Keep that public audience distinct from the current owner-focused workspace implementation described in `CLAUDE_CONTEXT.md`. Do not narrow public messaging to the owner's profile or add team, collaboration, invitation, or shared-workspace features unless explicitly requested.
 - Keep service costs at $0 by using free tiers only. Avoid paid plans, usage-based upgrades, and infrastructure that can incur charges without explicit approval. Check current provider limits before relying on free-tier behavior.
 - Supabase may be used within its current free tier. Installing an SDK does not mean a Supabase project, database, authentication, or persistence is configured. Do not claim the integration is live until credentials, schema, access policies, and runtime behavior have been verified.
 - Keep the interface focused on one person’s job search: finding relevant roles, organizing leads, preparing applications, and tracking outreach.

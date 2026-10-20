@@ -2,7 +2,7 @@
 
 ## What this app is
 
-remosus is a personal job, freelance, and contract search workspace for one person. Its purpose is to help its owner find relevant opportunities, keep a focused pipeline, prepare tailored applications, and follow up on outreach. The near-term objective is to land a gig, project, or contract within two weeks.
+Remosus is a job-search product for Nigerians and Africans looking for remote work. The public site should speak to that audience, not just the owner's profile. The current authenticated workspace is owner-focused: it helps organize relevant opportunities, prepare tailored applications, and follow up on outreach. Do not infer unimplemented multi-user, team, or collaboration features from the broader public audience.
 
 This is not a multi-tenant SaaS product. Do not add team, invitation, collaboration, or shared-workspace features unless explicitly requested.
 
