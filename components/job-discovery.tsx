@@ -214,28 +214,32 @@ export function JobDiscovery({
 
   return (
     <div className="space-y-6">
-      <section className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:p-6">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-emerald-500" />
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Remote feeds matched to your target work</p>
-          </div>
-          <h2 className="mt-2 text-lg font-semibold text-slate-950">Find roles that match your skills</h2>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">
-            We only show roles that name a target job and a matching skill. Generic software jobs are filtered out unless they clearly mention web work.
-          </p>
-          <p className="mt-2 max-w-3xl text-xs leading-5 text-slate-500">
-            Searches cover web development, email and Klaviyo, websites and WordPress, design and video, plus writing and content support.
-          </p>
-          <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">
-            These are search terms, not proof that every listing fits your experience. Shopify roles are not included yet.
-          </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="size-2 rounded-full bg-emerald-500" />
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Remote feeds matched to your target work</p>
+          <details className="group relative">
+            <summary className="cursor-pointer list-none rounded px-1 text-xs text-slate-400 hover:text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7c3aed]">
+              How this works
+            </summary>
+            <div className="absolute left-0 top-6 z-10 w-80 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
+              <p className="text-xs leading-5 text-slate-600">
+                Only roles that name a target job and a matching skill are shown. Generic software jobs are filtered out unless they clearly mention web work.
+              </p>
+              <p className="mt-2 text-xs leading-5 text-slate-500">
+                Searches cover web development, email and Klaviyo, websites and WordPress, design and video, community and moderation, marketing and growth, plus writing and content.
+              </p>
+              <p className="mt-1 text-xs leading-5 text-slate-500">
+                These are search terms, not proof that every listing fits your experience. Shopify roles are not included yet.
+              </p>
+            </div>
+          </details>
         </div>
-        <Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => void loadJobs()} disabled={loading}>
+        <Button type="button" variant="outline" size="sm" onClick={() => void loadJobs()} disabled={loading}>
           {loading ? <LoaderCircle aria-hidden="true" data-icon="inline-start" className="animate-spin" /> : <RefreshCw aria-hidden="true" data-icon="inline-start" />}
-          {loading ? 'Loading listings…' : 'Refresh listings'}
+          {loading ? 'Loading…' : 'Refresh listings'}
         </Button>
-      </section>
+      </div>
 
       {(error || sourceErrors.length > 0) && (
         <div role="alert" className="space-y-1 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">

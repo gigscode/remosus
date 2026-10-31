@@ -345,40 +345,22 @@ export function Dashboard({
             {active === 'discovery' ? (
               <>
                 <section aria-labelledby="job-search-overview-title" className="overflow-hidden rounded-2xl border border-violet-100 bg-white shadow-sm">
-                  <div className="relative px-5 py-6 sm:px-7 sm:py-7">
-                    <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-24 size-64 rounded-full border-[32px] border-violet-50/80" />
-                    <div className="relative flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
-                      <div className="max-w-2xl">
-                        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-violet-800">
-                          <span className="size-2 rounded-full bg-emerald-500" />
-                          Your personal job search
-                        </p>
-                        <h2 id="job-search-overview-title" className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">Find your next opportunity</h2>
-                        <p className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                          Explore relevant roles, check each source for eligibility, and save the opportunities you want to pursue.
-                        </p>
-                      </div>
-                      <p className="relative max-w-xs rounded-xl bg-violet-50 px-4 py-3 text-xs leading-5 text-violet-950">
-                        Your listings are matched by role and skill signals. Confirm details on the original posting.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="grid border-t border-slate-100 sm:grid-cols-2">
-                    <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-4 sm:border-b-0 sm:border-r sm:px-7">
-                      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-violet-50 text-violet-800">
+                  <div className="grid sm:grid-cols-2">
+                    <div className="flex items-center gap-4 border-b border-slate-100 px-5 py-5 sm:border-b-0 sm:border-r sm:px-7">
+                      <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-50 text-violet-800">
                         <BookmarkCheck aria-hidden="true" className="size-5" />
                       </span>
                       <div>
-                        <p className="text-2xl font-extrabold leading-none tabular-nums text-slate-950">{savedLeadCount.toLocaleString()}</p>
+                        <p className="text-3xl font-extrabold leading-none tabular-nums text-slate-950">{savedLeadCount.toLocaleString()}</p>
                         <p className="mt-1 text-xs font-medium text-slate-500">Saved leads to review</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3 px-5 py-4 sm:px-7">
-                      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-800">
+                    <div className="flex items-center gap-4 px-5 py-5 sm:px-7">
+                      <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
                         <Send aria-hidden="true" className="size-4" />
                       </span>
                       <div>
-                        <p className="text-2xl font-extrabold leading-none tabular-nums text-slate-950">{appliedCount.toLocaleString()}</p>
+                        <p className="text-3xl font-extrabold leading-none tabular-nums text-slate-950">{appliedCount.toLocaleString()}</p>
                         <p className="mt-1 text-xs font-medium text-slate-500">Marked as applied</p>
                       </div>
                     </div>
