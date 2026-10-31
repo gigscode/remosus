@@ -8,7 +8,7 @@ export const revalidate = 21600
 const jobicyEndpoint = 'https://jobicy.com/api/v2/remote-jobs'
 const remoteOkEndpoint = 'https://remoteok.com/api'
 const freehireEndpoint = 'https://freehire.me/api/v1/jobs/search'
-const freehireSearchTerms = ['developer', 'engineer', 'designer', 'automation', 'email', 'writer', 'content', 'marketing']
+const freehireSearchTerms = ['developer', 'engineer', 'designer', 'automation', 'email', 'writer', 'content', 'marketing', 'moderator', 'community manager', 'social media', 'seo', 'growth', 'coordinator']
 const jobicyListingPattern = /^https:\/\/jobicy\.com\/jobs\/[a-zA-Z0-9/_-]+$/
 const remoteOkListingPattern = /^https:\/\/remoteok\.com\/remote-jobs\/[a-zA-Z0-9/_-]+$/i
 
@@ -339,6 +339,12 @@ export async function GET(request: Request) {
   }
 
   const uniqueJobs = Array.from(new Map(jobs.map((job) => [job.url, job])).values())
+  uniqueJobs.sort((a, b) => {
+    if (!a.publishedAt && !b.publishedAt) return 0
+    if (!a.publishedAt) return 1
+    if (!b.publishedAt) return -1
+    return b.publishedAt.localeCompare(a.publishedAt)
+  })
   return NextResponse.json({
     jobs: uniqueJobs,
     updatedAt,

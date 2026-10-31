@@ -6,6 +6,8 @@ export type JobCategory =
   | 'website'
   | 'design'
   | 'content'
+  | 'community'
+  | 'marketing'
 
 export type TargetJobCategory = Exclude<JobCategory, 'all'>
 
@@ -17,6 +19,8 @@ export const jobCategories: { id: JobCategory; label: string }[] = [
   { id: 'website', label: 'Websites & e-commerce' },
   { id: 'design', label: 'Design & landing pages' },
   { id: 'content', label: 'Specialist writing' },
+  { id: 'community', label: 'Community & moderation' },
+  { id: 'marketing', label: 'Marketing & growth' },
 ]
 
 export const targetJobCategories: { id: TargetJobCategory; label: string }[] = [
@@ -26,6 +30,8 @@ export const targetJobCategories: { id: TargetJobCategory; label: string }[] = [
   { id: 'website', label: 'Websites & e-commerce' },
   { id: 'design', label: 'Design & landing pages' },
   { id: 'content', label: 'Specialist writing' },
+  { id: 'community', label: 'Community & moderation' },
+  { id: 'marketing', label: 'Marketing & growth' },
 ]
 
 type SearchLane = {
@@ -239,6 +245,10 @@ const searchLanes: SearchLane[] = [
       'content marketing assistant', 'saas content writer',
       'content repurposing specialist', 'ai content creator',
       'digital marketing assistant',
+      'social media coordinator', 'tiktok content creator', 'instagram content creator',
+      'youtube content creator', 'video content creator', 'ugc creator',
+      'short form content creator', 'podcast coordinator',
+      'newsletter writer', 'newsletter editor',
     ],
     detailRolePhrases: [
       'email copywriting', 'landing page copywriting', 'website copywriting',
@@ -247,6 +257,9 @@ const searchLanes: SearchLane[] = [
       'content marketing assistance', 'saas content writing',
       'content repurposing', 'ai content creation',
       'digital marketing assistance',
+      'tiktok content creation', 'instagram content creation',
+      'youtube content creation', 'short form video content',
+      'ugc content', 'podcast coordination', 'newsletter writing', 'newsletter editing',
     ],
     skillPhrases: [
       'email copywriting', 'landing page copywriting', 'website copywriting',
@@ -256,8 +269,72 @@ const searchLanes: SearchLane[] = [
       'social media management', 'social media manager',
       'content marketing', 'saas content', 'content repurposing',
       'ai content', 'digital marketing',
+      'tiktok', 'instagram', 'youtube content', 'short form video',
+      'ugc', 'podcast', 'newsletter', 'social media coordinator',
     ],
-    titleRoleWords: ['copywriter', 'writer', 'content', 'strategist'],
+    titleRoleWords: ['copywriter', 'writer', 'content', 'strategist', 'coordinator'],
+  },
+  {
+    id: 'community',
+    titleRolePhrases: [
+      'community manager', 'community coordinator', 'online community manager',
+      'community moderator', 'chat moderator', 'discord moderator',
+      'reddit moderator', 'forum moderator', 'social media moderator',
+      'content moderator', 'platform moderator', 'trust and safety specialist',
+      'community builder', 'community lead', 'head of community',
+      'community engagement specialist', 'community operations manager',
+      'community support specialist',
+    ],
+    titleRoleWords: ['moderator', 'community', 'moderation'],
+    detailRolePhrases: [
+      'community management', 'community moderation', 'chat moderation',
+      'forum moderation', 'content moderation', 'discord community',
+      'community engagement', 'trust and safety', 'community building',
+      'online community', 'community growth', 'community support',
+    ],
+    skillPhrases: [
+      'community management', 'discord', 'slack community', 'reddit',
+      'forum moderation', 'chat moderation', 'content moderation',
+      'community engagement', 'trust and safety', 'community coordinator',
+      'community builder', 'online community', 'community moderator',
+      'discord moderator', 'community manager',
+    ],
+  },
+  {
+    id: 'marketing',
+    titleRolePhrases: [
+      'digital marketing manager', 'digital marketing specialist', 'digital marketing coordinator',
+      'growth marketer', 'growth hacker', 'performance marketer',
+      'seo specialist', 'seo manager', 'sem specialist',
+      'paid ads specialist', 'google ads specialist', 'facebook ads specialist',
+      'meta ads specialist', 'paid media specialist', 'paid search specialist',
+      'brand marketer', 'marketing analyst', 'marketing strategist',
+      'demand generation specialist', 'lead generation specialist',
+      'affiliate marketing manager', 'affiliate manager',
+      'product marketing manager', 'product marketer',
+      'marketing manager', 'marketing coordinator',
+      'inbound marketing specialist', 'outbound marketing specialist',
+      'b2b marketing specialist', 'b2c marketing specialist',
+    ],
+    titleRoleWords: ['marketer', 'marketing', 'seo', 'sem', 'ads'],
+    detailRolePhrases: [
+      'digital marketing', 'performance marketing', 'growth marketing',
+      'seo strategy', 'search engine optimisation', 'search engine optimization',
+      'paid advertising', 'google ads', 'facebook ads', 'meta ads',
+      'demand generation', 'lead generation', 'affiliate marketing',
+      'product marketing', 'brand marketing', 'marketing strategy',
+      'marketing analytics', 'conversion rate optimization',
+      'b2b marketing', 'b2c marketing', 'inbound marketing', 'outbound marketing',
+    ],
+    skillPhrases: [
+      'digital marketing', 'seo', 'sem', 'google ads', 'facebook ads',
+      'meta ads', 'paid advertising', 'growth hacking', 'performance marketing',
+      'demand generation', 'lead generation', 'affiliate marketing',
+      'brand marketing', 'marketing strategy', 'marketing analytics',
+      'product marketing', 'conversion rate optimization',
+      'search engine optimisation', 'search engine optimization',
+      'b2b marketing', 'inbound marketing',
+    ],
   },
 ]
 

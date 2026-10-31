@@ -100,3 +100,7 @@ These rules apply to all UI work in this project. Follow them without exception.
 - Run `npx tsc --noEmit` after every code change. It must exit 0 before declaring a task done.
 - Do not declare a task done if TypeScript errors exist, even if the UI looks correct.
 - Do not change authentication flows, database schemas, environment files, or unrelated pages unless the user explicitly requests it.
+
+## Agent workflow
+
+- Do **not** use `run_workflow` or launch sub-workflows in this project. Implement all changes directly using file and terminal tools within the current session.
